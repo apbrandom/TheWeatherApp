@@ -11,6 +11,7 @@ import SnapKit
 class MainWeatherViewController: UIViewController {
     
     private var fixedHeight: CGFloat = 0.0
+    private let numberOfSections: CGFloat = 3.0
     
     //MARK: - Subviews
     
@@ -25,15 +26,17 @@ class MainWeatherViewController: UIViewController {
         stackView.backgroundColor = .cyan
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        #if DEBUG
+#if DEBUG
         stackView.spacing = 5
-        #endif
+#endif
         return stackView
     }()
     
     private lazy var topView: UIView = {
         let view = UIView()
+#if DEBUG
         view.backgroundColor = .tintColor
+#endif
         return view
     }()
     
@@ -50,7 +53,7 @@ class MainWeatherViewController: UIViewController {
     }()
     
     //MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,24 +64,21 @@ class MainWeatherViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        
         layoutContentViews()
     }
     
     //MARK: - Private
-
+    
     private func setupView() {
         view.backgroundColor = .brown
     }
     
     private func layoutContentViews() {
-        let isPortrait = UIApplication.shared.statusBarOrientation.isPortrait // Изменим способ определения ориентации
-
-        if isPortrait {
-            fixedHeight = mainScrollView.frame.size.height / 3.0
-        } else {
-            fixedHeight = mainScrollView.frame.size.width / 3.0
-        }
+        let dimension = view.window?.windowScene?.interfaceOrientation.isPortrait == true ?
+        mainScrollView.frame.size.height : mainScrollView.frame.size.width
+        
+        fixedHeight = dimension / numberOfSections
         
         mainStackView.arrangedSubviews.forEach { view in
             view.snp.updateConstraints { make in
@@ -86,8 +86,7 @@ class MainWeatherViewController: UIViewController {
             }
         }
     }
-        
-
+    
     private func setupSubview() {
         view.addSubview(mainScrollView)
         mainScrollView.addSubview(mainStackView)
@@ -100,7 +99,7 @@ class MainWeatherViewController: UIViewController {
         mainScrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-
+        
         mainStackView.snp.makeConstraints { make in
             make.edges.equalTo(mainScrollView)
             make.width.equalTo(mainScrollView)
