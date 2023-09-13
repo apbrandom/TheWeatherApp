@@ -52,6 +52,7 @@ class MainWeatherViewController: UIViewController {
         
         setupView()
         setupSubviews()
+        setupNavgatoinBar()
         setupConstraints()
     }
     
@@ -61,11 +62,44 @@ class MainWeatherViewController: UIViewController {
         adjustSubviews()
     }
     
+    //MARK: - Actions
+    
+    @objc func leftBarButtonTapped() {
+        // Ваш код при нажатии на левую кнопку
+    }
+    
+    @objc func rightBarButtonTapped() {
+        // Ваш код при нажатии на правую кнопку
+    }
+
+
+    
     //MARK: - Private Methods
     private func setupView() {
 #if DEBUG
         view.backgroundColor = .brown
+#else
+        view.backgroundColor = .white
 #endif
+    }
+    
+    private func setupNavgatoinBar() {
+        navigationItem.title = "City, Country"
+        
+//        let customTitleView = NavigationTitleView()
+//        
+//        navigationItem.titleView = customTitleView
+
+        let leftBarItem = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
+        let rightBarItem = UIBarButtonItem(image: UIImage(named: "location"), style: .plain, target: self, action: #selector(rightBarButtonTapped))
+
+        navigationItem.leftBarButtonItem = leftBarItem
+        navigationItem.rightBarButtonItem = rightBarItem
+        
+//        let dotsProgressBar = DotsProgressBar()
+//            dotsProgressBar.numberOfDots = 2
+//            navigationItem.titleView = dotsProgressBar
+            
     }
     
     private func adjustSubviews() {

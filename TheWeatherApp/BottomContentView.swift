@@ -32,10 +32,6 @@ class BottomContentView: UIView {
     }
     
     // MARK: - Private Methods
-    private func setupSubviews() {
-        addSubview(titleLabel)
-    }
-    
     private func setupView() {
 #if DEBUG
         backgroundColor = .tintColor
@@ -43,6 +39,10 @@ class BottomContentView: UIView {
    #else
        backgroundColor = .white
    #endif
+    }
+    
+    private func setupSubviews() {
+        addSubview(titleLabel)
     }
     
     private func setupConstraints() {
