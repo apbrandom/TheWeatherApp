@@ -11,11 +11,9 @@ import SnapKit
 class TopContentView: UIView {
     
     // MARK: - Subviews
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        return label
+    private lazy var dayCard: DayCardView = {
+        let view = DayCardView()
+        return view
     }()
     
     // MARK: - Initializers
@@ -33,21 +31,20 @@ class TopContentView: UIView {
     
     // MARK: - Private Methods
     private func setupSubviews() {
-        addSubview(titleLabel)
+        addSubview(dayCard)
     }
     
     private func setupView() {
 #if DEBUG
         backgroundColor = .systemRed
-        titleLabel.text = "Top View"
-   #else
-       backgroundColor = .white
-   #endif
+#else
+        backgroundColor = .white
+#endif
     }
     
     private func setupConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.center.equalTo(snp.center)
+        dayCard.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(16)
         }
     }
 }

@@ -40,11 +40,11 @@ class MidContentView: UIView {
 #if DEBUG
         backgroundColor = .systemGreen
         titleLabel.text = "Mid View"
-   #else
-       backgroundColor = .white
-   #endif
-        }
-
+#else
+        backgroundColor = .white
+#endif
+    }
+    
     
     
     private func setupConstraints() {

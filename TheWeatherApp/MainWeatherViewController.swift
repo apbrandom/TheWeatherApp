@@ -10,13 +10,24 @@ import SnapKit
 
 class MainWeatherViewController: UIViewController {
     
-    private var fixedHeightSubviews: CGFloat = 0.0
-    private let numberOfSubviews: CGFloat = 3.0
+    var coordinator: MainCoordinator?
+    var viewModel: MainWeatherViewModel
+    
+    init(viewModel: MainWeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - Subviews
     private lazy var mainScrollView: UIScrollView = {
         let scrollView = UIScrollView()
+#if DEBUG
         scrollView.backgroundColor = .gray
+#endif
         return scrollView
     }()
     
@@ -72,8 +83,6 @@ class MainWeatherViewController: UIViewController {
         // Ваш код при нажатии на правую кнопку
     }
 
-
-    
     //MARK: - Private Methods
     private func setupView() {
 #if DEBUG
@@ -86,6 +95,7 @@ class MainWeatherViewController: UIViewController {
     private func setupNavgatoinBar() {
         navigationItem.title = "City, Country"
         
+        
 //        let customTitleView = NavigationTitleView()
 //        
 //        navigationItem.titleView = customTitleView
@@ -95,6 +105,9 @@ class MainWeatherViewController: UIViewController {
 
         navigationItem.leftBarButtonItem = leftBarItem
         navigationItem.rightBarButtonItem = rightBarItem
+        
+        navigationItem.leftBarButtonItem?.tintColor = .text
+        navigationItem.rightBarButtonItem?.tintColor = .text
         
 //        let dotsProgressBar = DotsProgressBar()
 //            dotsProgressBar.numberOfDots = 2
@@ -106,11 +119,11 @@ class MainWeatherViewController: UIViewController {
         let dimension = view.window?.windowScene?.interfaceOrientation.isPortrait == true ?
         mainScrollView.frame.size.height : mainScrollView.frame.size.width
         
-        fixedHeightSubviews = dimension / numberOfSubviews
+        viewModel.fixedHeightSubviews = dimension / viewModel.getNumberOfSubviews()
         
         mainStackView.arrangedSubviews.forEach { view in
             view.snp.updateConstraints { make in
-                make.height.equalTo(fixedHeightSubviews)
+                make.height.equalTo(viewModel.getFixedHeightSubviews())
             }
         }
     }
