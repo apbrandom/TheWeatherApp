@@ -16,6 +16,24 @@ class MainWeatherViewModel {
     init(networkService: NetworkService) {
         self.networkService = networkService
     }
+    
+    
+//    private let coreDataStack = CoreDataStack()
+//
+//       func fetchWeather() async {
+//           do {
+//               let weatherData = try await networkService.fetchData()
+//               self.weather = weatherData
+//               coreDataStack.saveWeatherToCache(weather: weatherData)
+//               print("Fetched and saved to CoreData:", weatherData)
+//           } catch {
+//               print("Error fetching weather from API: \(error)")
+//               if let cachedWeather = coreDataStack.fetchCachedWeather() {
+//                   self.weather = cachedWeather
+//                   print("Fetched from CoreData:", cachedWeather)
+//               }
+//           }
+//       }
 
     func fetchWeather() async {
         do {

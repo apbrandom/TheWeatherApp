@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22221.1" systemVersion="23A339" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="FactEntity" representedClassName="FactEntity" syncable="YES" codeGenerationType="class">
+        <relationship name="fact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FactEntity"/>
+    </entity>
+    <entity name="ForecastEntity" representedClassName="ForecastEntity" syncable="YES" codeGenerationType="class">
+        <relationship name="hours" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HourEntity"/>
+        <relationship name="night" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PartDetailsEntity"/>
+        <relationship name="parts" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PartsEntity"/>
+    </entity>
+    <entity name="HourEntity" representedClassName="HourEntity" syncable="YES" codeGenerationType="class"/>
+    <entity name="InfoEntity" representedClassName="InfoEntity" syncable="YES" codeGenerationType="class">
+        <relationship name="tzinfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TzinfoEntity"/>
+        <relationship name="weather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeatherEntity"/>
+    </entity>
+    <entity name="PartDetailsEntity" representedClassName="PartDetailsEntity" syncable="YES" codeGenerationType="class"/>
+    <entity name="PartsEntity" representedClassName="PartsEntity" syncable="YES" codeGenerationType="class"/>
+    <entity name="TzinfoEntity" representedClassName="TzinfoEntity" syncable="YES" codeGenerationType="class"/>
+    <entity name="WeatherEntity" representedClassName="WeatherEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="now" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="nowDt" optional="YES" attributeType="String"/>
+        <relationship name="fact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FactEntity"/>
+        <relationship name="forecasts" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ForecastEntity"/>
+        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InfoEntity"/>
+    </entity>
+</model>
