@@ -8,16 +8,23 @@
 import Foundation
 
 class MainWeatherViewModel {
-    private var weather: Weather
+    private var weather: WeatherModel?
+    private let networkService: NetworkService
     internal var fixedHeightSubviews: CGFloat = 0.0
     private let numberOfSubviews: CGFloat = 3.0
     
-    var temperatureText: String {
-        return "\(weather.temperature)°C"
+    init(networkService: NetworkService) {
+        self.networkService = networkService
     }
-    
-    init(weather: Weather) {
-        self.weather = weather
+
+    func fetchWeather() async {
+        do {
+            let weatherData = try await networkService.fetchData()
+            self.weather = weatherData
+            print(weatherData.fact)
+        } catch {
+            print("Error fetching weather: \(error)")
+        }
     }
     
     func getFixedHeightSubviews() -> CGFloat {
@@ -29,3 +36,19 @@ class MainWeatherViewModel {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+//    var temperatureText: String? {
+//        guard let weather = weather else { return nil }
+//        return "\(weather)°C"
+//    }
+//

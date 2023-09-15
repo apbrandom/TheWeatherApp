@@ -16,17 +16,17 @@ protocol Coordinator {
 
 class MainCoordinator: Coordinator {
     var childCoordinators: [Coordinator]
-    
     var navigationController: UINavigationController
+    var networkService: NetworkService
 
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, networkService: NetworkService) {
         self.navigationController = navigationController
         self.childCoordinators = []
+        self.networkService = networkService
     }
 
     func start() {
-        let sampleWeather = Weather(temperature: 25, condition: "Sunny")
-        let viewModel = MainWeatherViewModel(weather: sampleWeather)
+        let viewModel = MainWeatherViewModel(networkService: networkService)
         let viewController = MainWeatherViewController(viewModel: viewModel)
         viewController.coordinator = self
         navigationController.pushViewController(viewController, animated: true)
@@ -37,4 +37,11 @@ class MainCoordinator: Coordinator {
         let detailViewController = DetailWeatherViewController(viewModel: detailViewModel)
         navigationController.pushViewController(detailViewController, animated: true)
     }
+    
+//    func childDidFinish(_ child: Coordinator?) {
+//            for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
+//                childCoordinators.remove(at: index)
+//                break
+//            }
+//        }
 }
