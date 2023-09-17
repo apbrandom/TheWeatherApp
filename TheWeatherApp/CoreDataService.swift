@@ -10,41 +10,64 @@ import UIKit
 
 class CoreDataService {
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    // Пример функции для сохранения данных
-    func saveWeather(_ weather: WeatherModel) {
-        let context = context
-        let entity = NSEntityDescription.entity(forEntityName: "WeatherData", in: context)!
-        let newWeather = NSManagedObject(entity: entity, insertInto: context)
-
-        newWeather.setValue(weather.now, forKey: "now")
-        newWeather.setValue(weather.nowDt, forKey: "nowDt")
-        // Установите все остальные поля...
-
-        saveContext()
+    private var context: NSManagedObjectContext
+        
+        init(context: NSManagedObjectContext) {
+            self.context = context
+        }
+    
+    //  сохранения данных
+    func saveWeather(_ databaseModel: WeatherDatabaseModel) {
+        let weatherEntity = WeatherEntity(context: context)
+        let factEntity = FactEntity(context: context)
+        
+        weatherEntity.now = databaseModel.now
+        weatherEntity.nowDt = databaseModel.nowDt
+        weatherEntity.fact = factEntity
+        
+        factEntity.temp = databaseModel.fact.temp
+        factEntity.feelsLike = databaseModel.fact.feelsLike
+        
+        do {
+            try context.save()
+            print("Coredata: saving successfully")
+        } catch {
+            print("Failed to save: \(error)")
+        }
     }
 
-    // Пример функции для извлечения данных
-    func fetchWeather() -> WeatherModel? {
-//        let context = persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "WeatherData")
 
+
+    func fetchCachedWeather() -> WeatherDatabaseModel? {
+        // Создаем запрос к CoreData
+        let request: NSFetchRequest<WeatherEntity> = WeatherEntity.fetchRequest()
+        
         do {
+            // Выполняем запрос и пытаемся получить данные
             let result = try context.fetch(request)
-            for data in result as! [NSManagedObject] {
-                let now = data.value(forKey: "now") as! Int
-                let nowDt = data.value(forKey: "nowDt") as! String
-                // Извлеките все остальные поля...
+            
+            // Проверяем, есть ли хотя бы одна запись
+            if let weatherEntity = result.first {
+                // Убеждаемся, что у WeatherEntity есть связанный FactEntity
+                guard let factEntity = weatherEntity.fact else {
+                    print("FactEntity is nil")
+                    return nil
+                }
+                // Инициализируем нашу модель данных из сущностей CoreData
+                let factDatabaseModel = FactDatabaseModel(temp: factEntity.temp, feelsLike: factEntity.feelsLike)
                 
-                return WeatherModel(now: now, nowDt: nowDt, ...)
+                return WeatherDatabaseModel(now: weatherEntity.now, nowDt: weatherEntity.nowDt ?? "", fact: factDatabaseModel)
             }
+            
         } catch {
-            print("Fetching data failed")
-            return nil
+            // Обрабатываем ошибки, если они возникают
+            print("Failed to fetch: \(error)")
         }
+        
         return nil
     }
 
-    
+
 }

@@ -8,42 +8,56 @@
 import Foundation
 
 class MainWeatherViewModel {
-    private var weather: WeatherModel?
+    
+    private var weatherModel: WeatherModel? {
+        didSet {
+            // Обновить UI при изменении модели погоды
+            updateUI?()
+        }
+    }
+    
+    var updateUI: (() -> Void)? {
+        didSet {
+            DispatchQueue.main.async {
+                self.updateUI?()
+            }
+        }
+    }
+    
     private let networkService: NetworkService
+    private let coreDataService: CoreDataService
+    
     internal var fixedHeightSubviews: CGFloat = 0.0
     private let numberOfSubviews: CGFloat = 3.0
     
-    init(networkService: NetworkService) {
+    
+    init(networkService: NetworkService, coreDataService: CoreDataService) {
         self.networkService = networkService
+        self.coreDataService = coreDataService
     }
     
-    
-//    private let coreDataStack = CoreDataStack()
-//
-//       func fetchWeather() async {
-//           do {
-//               let weatherData = try await networkService.fetchData()
-//               self.weather = weatherData
-//               coreDataStack.saveWeatherToCache(weather: weatherData)
-//               print("Fetched and saved to CoreData:", weatherData)
-//           } catch {
-//               print("Error fetching weather from API: \(error)")
-//               if let cachedWeather = coreDataStack.fetchCachedWeather() {
-//                   self.weather = cachedWeather
-//                   print("Fetched from CoreData:", cachedWeather)
-//               }
-//           }
-//       }
-
+    // Асинхронная функция для запроса погоды из сети и сохранения её в CoreData
     func fetchWeather() async {
         do {
-            let weatherData = try await networkService.fetchData()
-            self.weather = weatherData
-            print(weatherData.fact)
+            let networkModel = try await networkService.fetchNetworkModel()
+            let databaseModel = WeatherDatabaseModel(from: networkModel)
+            
+            // Сохраняем данные в CoreData
+            coreDataService.saveWeather(databaseModel)
+            
+            // Обновляем UI
+            self.weatherModel = WeatherModel(from: databaseModel)
+            print(weatherModel ?? "No data weatherModel")
         } catch {
             print("Error fetching weather: \(error)")
         }
     }
+
+
+    var temperatureText: String? {
+            guard let weather = weatherModel else { return nil }
+            return "\(weather.temp)°C"
+        }
     
     func getFixedHeightSubviews() -> CGFloat {
         return fixedHeightSubviews

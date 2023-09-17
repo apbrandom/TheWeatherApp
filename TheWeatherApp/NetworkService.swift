@@ -24,12 +24,10 @@ class NetworkService {
     
 
     
-    func fetchData() async throws -> WeatherModel {
+    func fetchNetworkModel() async throws -> WeatherNetworkModel {
         guard let url = createURL() else {
             throw NetworkError.badURL
         }
-        
-        
         
         var request = URLRequest(url: url)
         request.setValue(apiKey, forHTTPHeaderField: "X-Yandex-API-Key")
@@ -39,7 +37,7 @@ class NetworkService {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             do {
-                let result = try decoder.decode(WeatherModel.self, from: data)
+                let result = try decoder.decode(WeatherNetworkModel.self, from: data)
                 return result
             } catch let decodingError {
                 print("Decoding failed: \(decodingError)")

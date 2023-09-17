@@ -6,26 +6,41 @@
 //
 
 import UIKit
+import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     var coordinator: Coordinator?
     let networkService = NetworkService()
-    
+    var coreDataService: CoreDataService?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+        
+        guard let context = context else {
+            print("Failed to initialize Core Data context.")
+            return
+        }
+        
+        coreDataService = CoreDataService(context: context)
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let navController = UINavigationController()
         
-        coordinator = MainCoordinator(navigationController: navController, networkService: networkService)
+        guard let coreDataService = coreDataService else {
+            print("coreDataService is nil")
+            return
+        }
+        
+        coordinator = MainCoordinator(navigationController: navController, networkService: networkService, coreDataService: coreDataService)
         coordinator?.start()
         
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
     }
+
     
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
