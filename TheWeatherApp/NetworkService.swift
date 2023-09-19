@@ -38,6 +38,7 @@ class NetworkService {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             do {
                 let result = try decoder.decode(WeatherNetworkModel.self, from: data)
+                print("NetworkService: getting data from URL and decoding to WeatherNetworkModel successfully")
                 return result
             } catch let decodingError {
                 print("Decoding failed: \(decodingError)")

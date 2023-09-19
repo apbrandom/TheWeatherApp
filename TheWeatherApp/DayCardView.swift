@@ -6,13 +6,23 @@
 //
 
 import UIKit
+import SnapKit
 
 class DayCardView: UIView {
+    
+    private lazy var tempText: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.text =
+        return label
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupView()
+        addSubviews()
+        setupConstrains()
     }
     
     required init?(coder: NSCoder) {
@@ -21,8 +31,18 @@ class DayCardView: UIView {
     
     //MARK: - Private Methods
     
-    func setupView() {
+    private func setupView() {
         backgroundColor = .tintColor
+    }
+    
+    private func addSubviews() {
+        addSubview(tempText)
+    }
+    
+    private func setupConstrains() {
+        tempText.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
 
 }

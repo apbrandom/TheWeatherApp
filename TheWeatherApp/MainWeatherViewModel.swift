@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import Combine
 
 class MainWeatherViewModel {
     
+    
+
     private var weatherModel: WeatherModel? {
         didSet {
             // Обновить UI при изменении модели погоды
