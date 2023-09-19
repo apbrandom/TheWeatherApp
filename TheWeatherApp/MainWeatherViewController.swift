@@ -7,11 +7,13 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 class MainWeatherViewController: UIViewController {
     
     var coordinator: MainCoordinator?
     var viewModel: MainWeatherViewModel
+    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: MainWeatherViewModel) {
         self.viewModel = viewModel
@@ -65,10 +67,10 @@ class MainWeatherViewController: UIViewController {
         setupSubviews()
         setupNavgatoinBar()
         setupConstraints()
+        bindViewModel()
         
         Task {
             await viewModel.fetchWeather()
-            
         }
     }
     
@@ -95,6 +97,10 @@ class MainWeatherViewController: UIViewController {
 #else
         view.backgroundColor = .white
 #endif
+    }
+    
+    func bindViewModel() {
+        topView.bindToViewModel(viewModel)
     }
     
     private func setupNavgatoinBar() {

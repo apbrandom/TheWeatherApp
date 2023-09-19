@@ -10,10 +10,10 @@ import SnapKit
 
 class DayCardView: UIView {
     
-    private lazy var tempText: UILabel = {
+    open lazy var tempText: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.text =
+        label.text = "Text"
         return label
     }()
 
