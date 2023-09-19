@@ -10,19 +10,13 @@ import Combine
 
 class MainWeatherViewModel {
     
-    @Published var temperatureText: String?
-
-    @Published var weatherModel: WeatherModel? {
-        didSet {
-
-            }
-        }
-    
+    @Published var weatherModel: WeatherModel?
+    var weatherModelUpdate: AnyPublisher<WeatherModel?, Never> {
+        $weatherModel.eraseToAnyPublisher()
+    }
     
     private var cancellables = Set<AnyCancellable>()
 
-
-    
     private let networkService: NetworkService
     private let coreDataService: CoreDataService
     
@@ -45,17 +39,28 @@ class MainWeatherViewModel {
                 // Сохраняем данные в CoreData
                 coreDataService.saveWeather(databaseModel)
                 
-                // Обновляем UI
+                // Обновляем weatherModel
                 self.weatherModel = WeatherModel(from: databaseModel)
                 print(weatherModel ?? "No data weatherModel")
             } catch {
                 print("Error fetching weather: \(error)")
+                // Здесь пытаемся загрузить данные из CoreData
+                if let lastSavedWeather = coreDataService.fetchCachedWeather() {
+                    self.weatherModel = WeatherModel(from: lastSavedWeather)
+                }
             }
         }
     }
-
-
     
+    // Используем Combine для обработки обновлений weatherModel
+        func startObservingWeatherModelUpdates() {
+            self.$weatherModel
+                .sink { updatedWeatherModel in
+                    // Здесь обрабатываем обновление модели
+                }
+                .store(in: &cancellables)
+        }
+
     func getFixedHeightSubviews() -> CGFloat {
         return fixedHeightSubviews
     }

@@ -22,8 +22,6 @@ class NetworkService {
         return url
     }
     
-
-    
     func fetchNetworkModel() async throws -> WeatherNetworkModel {
         guard let url = createURL() else {
             throw NetworkError.badURL
@@ -63,4 +61,3 @@ class NetworkService {
 //        let urlString = "\(weatherURL)%lat=\(latitude)%lon=\(longitude)"
 //        performRequest(with: urlString)
 //    }
-//"5ce5fb1b-d47e-432e-8825-b5a2577f089b"

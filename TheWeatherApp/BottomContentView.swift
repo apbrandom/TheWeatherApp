@@ -12,7 +12,6 @@ class BottomContentView: UIView {
     // MARK: - Subviews
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         return label
@@ -33,12 +32,7 @@ class BottomContentView: UIView {
     
     // MARK: - Private Methods
     private func setupView() {
-#if DEBUG
-        backgroundColor = .tintColor
-        titleLabel.text = "Bottom View"
-   #else
        backgroundColor = .white
-   #endif
     }
     
     private func setupSubviews() {

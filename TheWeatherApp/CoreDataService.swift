@@ -10,8 +10,6 @@ import UIKit
 
 class CoreDataService {
     
-//    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     private var context: NSManagedObjectContext
         
         init(context: NSManagedObjectContext) {
@@ -20,24 +18,38 @@ class CoreDataService {
     
     //  сохранения данных
     func saveWeather(_ databaseModel: WeatherDatabaseModel) {
-        let weatherEntity = WeatherEntity(context: context)
-        let factEntity = FactEntity(context: context)
+        // Попытка найти существующую запись
+        let request: NSFetchRequest<WeatherEntity> = WeatherEntity.fetchRequest()
+        var weatherEntity: WeatherEntity?
         
-        weatherEntity.now = databaseModel.now
-        weatherEntity.nowDt = databaseModel.nowDt
-        weatherEntity.fact = factEntity
+        do {
+            let result = try context.fetch(request)
+            weatherEntity = result.first
+        } catch {
+            print("Failed to fetch existing weather: \(error)")
+        }
+        
+        // Если запись не найдена, создаем новую
+        if weatherEntity == nil {
+            weatherEntity = WeatherEntity(context: context)
+        }
+        
+        // Заполнение или обновление сущности
+        let factEntity = weatherEntity?.fact ?? FactEntity(context: context)
+        weatherEntity?.now = databaseModel.now
+        weatherEntity?.nowDt = databaseModel.nowDt
+        weatherEntity?.fact = factEntity
         
         factEntity.temp = databaseModel.fact.temp
         factEntity.feelsLike = databaseModel.fact.feelsLike
         
         do {
             try context.save()
-            print("Coredata: saving successfully")
+            print("CoreData: saving or updating successfully")
         } catch {
-            print("Failed to save: \(error)")
+            print("Failed to save or update: \(error)")
         }
     }
-
 
 
     func fetchCachedWeather() -> WeatherDatabaseModel? {
@@ -62,7 +74,6 @@ class CoreDataService {
             }
             
         } catch {
-            // Обрабатываем ошибки, если они возникают
             print("Failed to fetch: \(error)")
         }
         

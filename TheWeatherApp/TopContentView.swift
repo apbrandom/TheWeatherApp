@@ -11,14 +11,6 @@ import Combine
 
 class TopContentView: UIView {
     
-    var weatherModel: WeatherModel? {
-        didSet {
-            if let temp = weatherModel?.temp {
-                dayCardView.tempText.text = "\(temp)"
-            }
-        }
-    }
-
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Subviews

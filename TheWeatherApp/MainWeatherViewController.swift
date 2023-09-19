@@ -27,9 +27,6 @@ class MainWeatherViewController: UIViewController {
     //MARK: - Subviews
     private lazy var mainScrollView: UIScrollView = {
         let scrollView = UIScrollView()
-#if DEBUG
-        scrollView.backgroundColor = .gray
-#endif
         return scrollView
     }()
     
@@ -37,10 +34,6 @@ class MainWeatherViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-#if DEBUG
-        stackView.backgroundColor = .cyan
-        stackView.spacing = 5
-#endif
         return stackView
     }()
     
@@ -92,11 +85,7 @@ class MainWeatherViewController: UIViewController {
     
     //MARK: - Private Methods
     private func setupView() {
-#if DEBUG
-        view.backgroundColor = .brown
-#else
         view.backgroundColor = .white
-#endif
     }
     
     func bindViewModel() {
