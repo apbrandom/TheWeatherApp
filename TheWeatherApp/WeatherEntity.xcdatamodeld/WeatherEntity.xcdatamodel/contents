@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="23A339" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="FactEntity" representedClassName="FactEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="feelsLike" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="temp" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="weather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeatherEntity" inverseName="fact" inverseEntity="WeatherEntity"/>
+    </entity>
+    <entity name="ForecastsEntity" representedClassName="ForecastsEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="sunrise" optional="YES" attributeType="String"/>
+        <relationship name="weather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeatherEntity" inverseName="forecasts" inverseEntity="WeatherEntity"/>
+    </entity>
+    <entity name="WeatherEntity" representedClassName="WeatherEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="nowDt" optional="YES" attributeType="String"/>
+        <relationship name="fact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FactEntity" inverseName="weather" inverseEntity="FactEntity"/>
+        <relationship name="forecasts" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ForecastsEntity" inverseName="weather" inverseEntity="ForecastsEntity"/>
+    </entity>
+</model>
