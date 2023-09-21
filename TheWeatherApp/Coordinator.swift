@@ -18,17 +18,19 @@ class MainCoordinator: Coordinator {
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator]
     var networkService: NetworkService
-    var coreDataService: CoreDataService
+//    var coreDataService: CoreDataService
+    var realmService: RealmService
 
-    init(navigationController: UINavigationController, networkService: NetworkService, coreDataService: CoreDataService) {
+    init(navigationController: UINavigationController, networkService: NetworkService, realmService: RealmService) {
         self.navigationController = navigationController
         self.childCoordinators = []
         self.networkService = networkService
-        self.coreDataService = coreDataService
+//        self.coreDataService = coreDataService
+        self.realmService = realmService
     }
 
     func start() {
-        let viewModel = MainWeatherViewModel(networkService: networkService, coreDataService: coreDataService)
+        let viewModel = MainWeatherViewModel(networkService: networkService, realmService: realmService)
         let viewController = MainWeatherViewController(viewModel: viewModel)
         viewController.coordinator = self
         navigationController.pushViewController(viewController, animated: true)

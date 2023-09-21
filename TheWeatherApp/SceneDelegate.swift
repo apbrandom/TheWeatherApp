@@ -13,28 +13,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var coordinator: Coordinator?
     let networkService = NetworkService()
-    var coreDataService: CoreDataService?
+//    var coreDataService: CoreDataService?
+    var realmService: RealmService = RealmService()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+//        let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
         
-        guard let context = context else {
-            print("Failed to initialize Core Data context.")
-            return
-        }
+//        guard let context = context else {
+//            print("Failed to initialize Core Data context.")
+//            return
+//        }
         
-        coreDataService = CoreDataService(context: context)
+//        coreDataService = CoreDataService(context: context)
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let navController = UINavigationController()
         
-        guard let coreDataService = coreDataService else {
-            print("coreDataService is nil")
-            return
-        }
+//        guard let coreDataService = coreDataService else {
+//            print("coreDataService is nil")
+//            return
+//        }
         
-        coordinator = MainCoordinator(navigationController: navController, networkService: networkService, coreDataService: coreDataService)
+        coordinator = MainCoordinator(navigationController: navController, networkService: networkService, realmService: realmService)
         coordinator?.start()
         
         window?.rootViewController = navController

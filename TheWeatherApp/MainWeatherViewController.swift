@@ -62,8 +62,8 @@ class MainWeatherViewController: UIViewController {
         setupConstraints()
         bindViewModel()
         
-        Task {
-            await viewModel.fetchWeather()
+        Task { [weak self] in
+            await self?.viewModel.fetchWeather()
         }
         
 
