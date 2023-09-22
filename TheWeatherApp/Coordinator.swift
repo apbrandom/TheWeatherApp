@@ -18,19 +18,19 @@ class MainCoordinator: Coordinator {
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator]
     var networkService: NetworkService
-//    var coreDataService: CoreDataService
     var realmService: RealmService
+    var modelConverter: ModelConverter
 
-    init(navigationController: UINavigationController, networkService: NetworkService, realmService: RealmService) {
+    init(navigationController: UINavigationController, networkService: NetworkService, realmService: RealmService, modelConverter: ModelConverter) {
         self.navigationController = navigationController
         self.childCoordinators = []
         self.networkService = networkService
-//        self.coreDataService = coreDataService
         self.realmService = realmService
+        self.modelConverter = modelConverter
     }
 
     func start() {
-        let viewModel = MainWeatherViewModel(networkService: networkService, realmService: realmService)
+        let viewModel = MainWeatherViewModel(networkService: networkService, realmService: realmService, modelConverter: modelConverter)
         let viewController = MainWeatherViewController(viewModel: viewModel)
         viewController.coordinator = self
         navigationController.pushViewController(viewController, animated: true)
@@ -42,10 +42,4 @@ class MainCoordinator: Coordinator {
         navigationController.pushViewController(detailViewController, animated: true)
     }
     
-//    func childDidFinish(_ child: Coordinator?) {
-//            for (index, coordinator) in childCoordinators.enumerated() where coordinator === child {
-//                childCoordinators.remove(at: index)
-//                break
-//            }
-//        }
 }

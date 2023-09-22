@@ -51,7 +51,6 @@ class TopContentView: UIView {
         self.dayCardView.tempLabel.text = "\(temp)"
     }
 
-
     private func setupConstraints() {
         dayCardView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(16)

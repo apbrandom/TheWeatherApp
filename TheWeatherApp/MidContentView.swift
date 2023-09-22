@@ -40,8 +40,6 @@ class MidContentView: UIView {
         backgroundColor = .white
     }
     
-    
-    
     private func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.center.equalTo(snp.center)

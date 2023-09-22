@@ -13,7 +13,6 @@ class MainWeatherViewController: UIViewController {
     
     var coordinator: MainCoordinator?
     var viewModel: MainWeatherViewModel
-//    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: MainWeatherViewModel) {
         self.viewModel = viewModel
@@ -63,10 +62,6 @@ class MainWeatherViewController: UIViewController {
         Task {
             await topView.bindToViewModel(viewModel)
         }
-//        Task { [weak self] in
-//            await self?.viewModel.fetchWeather()
-//        }
-
     }
     
     override func viewDidLayoutSubviews() {
@@ -90,17 +85,8 @@ class MainWeatherViewController: UIViewController {
         view.backgroundColor = .white
     }
     
-//    func bindViewModel() async {
-//        await TopView.bindToViewModel(viewModel)
-//    }
-    
     private func setupNavgatoinBar() {
         navigationItem.title = "City, Country"
-        
-        
-        //        let customTitleView = NavigationTitleView()
-        //
-        //        navigationItem.titleView = customTitleView
         
         let leftBarItem = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
         let rightBarItem = UIBarButtonItem(image: UIImage(named: "location"), style: .plain, target: self, action: #selector(rightBarButtonTapped))
@@ -110,11 +96,6 @@ class MainWeatherViewController: UIViewController {
         
         navigationItem.leftBarButtonItem?.tintColor = .text
         navigationItem.rightBarButtonItem?.tintColor = .text
-        
-        //        let dotsProgressBar = DotsProgressBar()
-        //            dotsProgressBar.numberOfDots = 2
-        //            navigationItem.titleView = dotsProgressBar
-        
     }
     
     private func adjustSubviews() {

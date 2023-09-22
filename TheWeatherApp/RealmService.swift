@@ -9,7 +9,6 @@ import RealmSwift
 
 class RealmService {
     
-    // Инициализируем Realm. В случае ошибки возвращаем nil и выводим ошибку в консоль.
     private var realm: Realm? {
         do {
             return try Realm()
@@ -22,9 +21,9 @@ class RealmService {
     func saveOrUpdateWeather(_ weatherModel: WeatherRealmModel) async throws {
         do {
             guard let realm = self.realm else {
-                // Здесь можно бросить свою кастомную ошибку, если Realm не инициализирован
                 return
             }
+            
             try realm.write {
                 if let existingWeatherModel = realm.objects(WeatherRealmModel.self).first {
                     update(existing: existingWeatherModel, with: weatherModel)
