@@ -7,11 +7,8 @@
 
 import UIKit
 import SnapKit
-import Combine
 
 class TopContentView: UIView {
-    
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Subviews
     private lazy var dayCardView: DayCardView = {
@@ -42,17 +39,18 @@ class TopContentView: UIView {
         backgroundColor = .white
     }
     
-    func bindToViewModel(_ viewModel: MainWeatherViewModel) {
-        viewModel.$weatherModel
-            .sink { [weak self] newWeatherModel in
-                DispatchQueue.main.async {
-                    if let temp = newWeatherModel?.fact.temp {
-                        self?.dayCardView.tempLabel.text = "\(temp)"
-                    }
-                }
-            }
-            .store(in: &cancellables)
+    @MainActor
+    func bindToViewModel(_ viewModel: MainWeatherViewModel) async {
+        if let newWeatherModel = try? await viewModel.fetchWeather() {
+            updateUI(with: newWeatherModel)
+        }
     }
+
+    private func updateUI(with weatherModel: WeatherViewModel) {
+        let temp = weatherModel.fact.temp
+        self.dayCardView.tempLabel.text = "\(temp)"
+    }
+
 
     private func setupConstraints() {
         dayCardView.snp.makeConstraints { make in

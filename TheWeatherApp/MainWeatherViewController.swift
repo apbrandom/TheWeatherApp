@@ -13,7 +13,7 @@ class MainWeatherViewController: UIViewController {
     
     var coordinator: MainCoordinator?
     var viewModel: MainWeatherViewModel
-    private var cancellables = Set<AnyCancellable>()
+//    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: MainWeatherViewModel) {
         self.viewModel = viewModel
@@ -60,12 +60,12 @@ class MainWeatherViewController: UIViewController {
         setupSubviews()
         setupNavgatoinBar()
         setupConstraints()
-        bindViewModel()
-        
-        Task { [weak self] in
-            await self?.viewModel.fetchWeather()
+        Task {
+            await topView.bindToViewModel(viewModel)
         }
-        
+//        Task { [weak self] in
+//            await self?.viewModel.fetchWeather()
+//        }
 
     }
     
@@ -90,9 +90,9 @@ class MainWeatherViewController: UIViewController {
         view.backgroundColor = .white
     }
     
-    func bindViewModel() {
-        topView.bindToViewModel(viewModel)
-    }
+//    func bindViewModel() async {
+//        await TopView.bindToViewModel(viewModel)
+//    }
     
     private func setupNavgatoinBar() {
         navigationItem.title = "City, Country"
