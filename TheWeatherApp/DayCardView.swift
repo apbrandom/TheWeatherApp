@@ -21,7 +21,7 @@ class DayCardView: UIView {
     lazy var sunriseLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 40)
+        label.font = .boldSystemFont(ofSize: 16)
         label.text = "--"
         return label
     }()
@@ -50,6 +50,22 @@ class DayCardView: UIView {
         return image
     }()
     
+    lazy var currentDateLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .yell
+        label.font = .boldSystemFont(ofSize: 16)
+        label.text = "--"
+        return label
+    }()
+    
+    lazy var Label: UILabel = {
+        let label = UILabel()
+        label.textColor = .yell
+        label.font = .boldSystemFont(ofSize: 16)
+        label.text = "--"
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -74,6 +90,8 @@ class DayCardView: UIView {
         addSubview(ellipseImage)
         addSubview(sunriseImage)
         addSubview(sunsetImage)
+        addSubview(currentDateLabel)
+        addSubview(sunriseLabel)
     }
     
     private func setupConstrains() {
@@ -83,8 +101,7 @@ class DayCardView: UIView {
         }
         
         gradusImage.snp.makeConstraints { make in
-                make.top.equalTo(tempLabel.snp.top)
-                
+            make.top.equalTo(tempLabel.snp.top)
             make.height.width.equalTo(5)
             make.left.equalTo(tempLabel.snp.right).offset(2)
             }
@@ -102,11 +119,23 @@ class DayCardView: UIView {
             make.width.height.equalTo(18)
         }
         
+        sunriseLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(16)
+            make.top.equalTo(sunriseImage.snp.bottom).offset(5)
+        }
+        
         sunsetImage.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(29)
             make.bottom.equalTo(ellipseImage.snp.bottom).offset(20)
             make.width.height.equalTo(18)
         }
+        
+        currentDateLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(20)
+        }
+        
+
     }
     
 }

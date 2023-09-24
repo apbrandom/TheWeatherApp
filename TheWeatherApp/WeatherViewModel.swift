@@ -10,13 +10,16 @@ import Foundation
 struct WeatherViewModel {
     let nowDt: String
     let fact: FactViewModel
-
+    let forecasts: [ForecastsViewModel]
 }
 
 struct FactViewModel: Decodable {
     let temp: Int
 }
 
+struct ForecastsViewModel {
+    let sunrise: String
+}
 
 
 

@@ -10,13 +10,25 @@ import RealmSwift
 class RealmService {
     
     private var realm: Realm? {
-        do {
-            return try Realm()
-        } catch {
-            print("Failed to initialize Realm: \(error.localizedDescription)")
-            return nil
+            do {
+                let config = Realm.Configuration(
+                    schemaVersion: 3,  // увеличьте это значение на 1 при каждой новой миграции
+                    migrationBlock: { migration, oldSchemaVersion in
+                        // код миграции
+                        if oldSchemaVersion < 1 {
+                            // В вашем случае новое поле forecasts было добавлено.
+                            // Нет необходимости делать что-то специальное здесь,
+                            // так как Realm автоматически обнаружит новое свойство и добавит его.
+                        }
+                    }
+                )
+                
+                return try Realm(configuration: config)
+            } catch {
+                print("Failed to initialize Realm: \(error.localizedDescription)")
+                return nil
+            }
         }
-    }
     
     func saveOrUpdateWeather(_ weatherModel: WeatherRealmModel) async throws {
         do {

@@ -10,14 +10,16 @@ import Foundation
 struct WeatherNetworkModel: Decodable {
     let nowDt: String
     let fact: Fact
-
+    let forecasts: [Forecasts]
 }
 
 struct Fact: Decodable {
     let temp: Int
 }
 
-
+struct Forecasts: Decodable {
+    let sunrise: String
+}
 
 
 

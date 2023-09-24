@@ -10,17 +10,11 @@ import SnapKit
 
 class TopContentView: UIView {
     
-    // MARK: - Subviews
-    private lazy var dayCardView: DayCardView = {
-        let view = DayCardView()
-        view.layer.cornerRadius = 5
-        return view
-    }()
-        
-    // MARK: - Initializers
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    var viewModel: MainWeatherViewModel
+    
+    init(viewModel: MainWeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupView()
         setupSubviews()
         setupConstraints()
@@ -29,6 +23,15 @@ class TopContentView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    // MARK: - Subviews
+    private lazy var dayCardView: DayCardView = {
+        let view = DayCardView()
+        view.layer.cornerRadius = 5
+        return view
+    }()
+
     
     // MARK: - Private Methods
     private func setupSubviews() {
@@ -47,8 +50,13 @@ class TopContentView: UIView {
     }
 
     private func updateUI(with weatherModel: WeatherViewModel) {
-        let temp = weatherModel.fact.temp
-        self.dayCardView.tempLabel.text = "\(temp)"
+        guard let date = viewModel.convertDate(from: weatherModel.nowDt) else { return }
+        let fact = weatherModel.fact
+        let forecasts = weatherModel.forecasts
+        
+        self.dayCardView.currentDateLabel.text = "\(date)"
+        self.dayCardView.tempLabel.text = "\(fact.temp)"
+        self.dayCardView.sunriseLabel.text = "\(forecasts.first?.sunrise)"
     }
 
     private func setupConstraints() {

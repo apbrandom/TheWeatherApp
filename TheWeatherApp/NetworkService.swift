@@ -4,7 +4,10 @@
 //
 //  Created by Vadim Vinogradov on 14.09.2023.
 //
+
 let apiKey = "5ce5fb1b-d47e-432e-8825-b5a2577f089b"
+
+var apiKey1 = ""
 
 import Foundation
 
@@ -37,7 +40,7 @@ class NetworkService {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             do {
                 let result = try decoder.decode(WeatherNetworkModel.self, from: data)
-                print("NetworkService: getting data from URL and decoding to WeatherNetworkModel successfully")
+                print("--NetworkService: getting data from URL and decoding")
                 
                 return result
             } catch let decodingError {

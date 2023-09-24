@@ -10,20 +10,31 @@ import RealmSwift
 class WeatherRealmModel: Object {
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var nowDt: String = ""
-    @Persisted var fact: FactRealmModel?
+    @Persisted var fact: FactRealm?
+    @Persisted var forecasts = List<ForecastsRealm>()
     
-    convenience init(nowDt: String) {
+    convenience init(nowDt: String, fact: FactRealm, forecasts: List<ForecastsRealm>) {
         self.init()
         self.nowDt = nowDt
+        self.fact = fact
+        self.forecasts = forecasts
     }
 }
-
-class FactRealmModel: Object {
+class FactRealm: Object {
     @Persisted var temp: Int = 0
     
     convenience init(temp: Int) {
         self.init()
         self.temp = temp
+    }
+}
+
+class ForecastsRealm: Object {
+    @Persisted var sunrise: String
+    
+    convenience init(sunrise: String) {
+        self.init()
+        self.sunrise = sunrise
     }
 }
 

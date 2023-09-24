@@ -14,7 +14,7 @@ class MainWeatherViewModel {
     private let modelConverter: ModelConverter
     
     internal var fixedHeightSubviews: CGFloat = 0.0
-    private let numberOfSubviews: CGFloat = 3.0
+    internal let numberOfSubviews: CGFloat = 3.0
     
     init(networkService: NetworkService, realmService: RealmService, modelConverter: ModelConverter) {
         self.networkService = networkService
@@ -22,10 +22,18 @@ class MainWeatherViewModel {
         self.modelConverter = modelConverter
     }
     
+    func getFixedHeightSubviews() -> CGFloat {
+        return fixedHeightSubviews
+    }
+    
+    func getNumberOfSubviews() -> CGFloat {
+        return numberOfSubviews
+    }
+    
     func fetchWeather() async throws -> WeatherViewModel {
         do {
             let networkModel = try await networkService.fetchNetworkModel()
-            let realmModel = modelConverter.toRealmModel(networkModel: networkModel)
+            let realmModel = modelConverter.toRealmModel(from: networkModel)
             try await realmService.saveOrUpdateWeather(realmModel)
             return modelConverter.toViewModel(from: realmModel)
         } catch {
@@ -44,12 +52,21 @@ class MainWeatherViewModel {
         }
     }
     
-    func getFixedHeightSubviews() -> CGFloat {
-        return fixedHeightSubviews
-    }
-    
-    func getNumberOfSubviews() -> CGFloat {
-        return numberOfSubviews
+    func convertDate(from isoDate: String) -> String? {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        guard let date = isoFormatter.date(from: isoDate) else {
+            print("Bad iso date format")
+            return nil
+        }
+        
+        let formartter = DateFormatter()
+        formartter.locale = Locale(identifier: "ru_RU")
+        formartter.dateFormat = "HH:mm, EEE d MMM"
+        
+        let resultDate = formartter.string(from: date)
+        return resultDate
     }
     
     enum WeatherError: Error {
