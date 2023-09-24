@@ -15,12 +15,16 @@ struct WeatherViewModel {
 
 struct FactViewModel: Decodable {
     let temp: Int
+    let windSpeed: Double //
+    let humidity: Int //
 }
 
-struct ForecastsViewModel {
+struct ForecastsViewModel: Decodable {
+    let date: String //
     let sunrise: String
+    let sunset: String //
+//    let parts: Parts
 }
-
 
 
     

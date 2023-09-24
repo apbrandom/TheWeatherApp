@@ -12,7 +12,7 @@ class RealmService {
     private var realm: Realm? {
             do {
                 let config = Realm.Configuration(
-                    schemaVersion: 3,  // увеличьте это значение на 1 при каждой новой миграции
+                    schemaVersion: 4,  // увеличьте это значение на 1 при каждой новой миграции
                     migrationBlock: { migration, oldSchemaVersion in
                         // код миграции
                         if oldSchemaVersion < 1 {
@@ -54,6 +54,8 @@ class RealmService {
     
     private func update(existing: WeatherRealmModel, with newModel: WeatherRealmModel) {
         existing.nowDt = newModel.nowDt
+        existing.fact = newModel.fact
+        existing.forecasts = newModel.forecasts
         // Добавьте другие поля для обновления, если нужно
     }
     

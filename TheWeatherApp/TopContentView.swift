@@ -50,13 +50,13 @@ class TopContentView: UIView {
     }
 
     private func updateUI(with weatherModel: WeatherViewModel) {
-        guard let date = viewModel.convertDate(from: weatherModel.nowDt) else { return }
+        guard let nowDt = viewModel.convertDate(from: weatherModel.nowDt) else { return }
         let fact = weatherModel.fact
         let forecasts = weatherModel.forecasts
         
-        self.dayCardView.currentDateLabel.text = "\(date)"
+        self.dayCardView.currentDateLabel.text = nowDt
         self.dayCardView.tempLabel.text = "\(fact.temp)"
-        self.dayCardView.sunriseLabel.text = "\(forecasts.first?.sunrise)"
+        self.dayCardView.sunriseLabel.text = "\(forecasts.first?.sunrise ?? "N/A")"
     }
 
     private func setupConstraints() {

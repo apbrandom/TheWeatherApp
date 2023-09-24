@@ -15,12 +15,20 @@ struct WeatherNetworkModel: Decodable {
 
 struct Fact: Decodable {
     let temp: Int
+    let windSpeed: Double //
+    let humidity: Int //
 }
 
 struct Forecasts: Decodable {
+    let date: String //
     let sunrise: String
+    let sunset: String //
+//    let parts: Parts
 }
 
+//struct Parts: Decodable {
+//    let day:
+//}
 
 
 
@@ -54,7 +62,7 @@ struct Forecasts: Decodable {
 //    let windDir: String
 //    let pressureMm: Int
 //    let pressurePa: Int
-//    let humidity: Int
+//
 //    let daytime: String
 //    let polar: Bool
 //    let season: String

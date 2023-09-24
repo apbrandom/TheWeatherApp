@@ -12,14 +12,23 @@ class ModelConverter {
     
     func toRealmModel(from networkModel: WeatherNetworkModel) -> WeatherRealmModel {
         let realmModel = WeatherRealmModel()
+        
+        //nowDt
         realmModel.nowDt = networkModel.nowDt
         
-        // Преобразование Fact
-        realmModel.fact = FactRealm(temp: networkModel.fact.temp)
-        
-        // Преобразование Forecasts
+        //Fact
+        let realmModelFact = FactRealm()
+        realmModelFact.temp = networkModel.fact.temp
+        realmModelFact.windSpeed = networkModel.fact.windSpeed
+        realmModelFact.humudity = networkModel.fact.humidity
+        realmModel.fact = realmModelFact
+                
+        //Forecasts
         networkModel.forecasts.forEach {
-            let forecastRealm = ForecastsRealm(sunrise: $0.sunrise)
+            let forecastRealm = ForecastsRealm()
+            forecastRealm.date = $0.date
+            forecastRealm.sunrise = $0.sunrise
+            forecastRealm.sunset = $0.sunset
             realmModel.forecasts.append(forecastRealm)
         }
         
@@ -27,11 +36,15 @@ class ModelConverter {
     }
     
     func toViewModel(from realmModel: WeatherRealmModel) -> WeatherViewModel {
-        let factViewModel = FactViewModel(temp: realmModel.fact?.temp ?? 0)
+        //Fact
+        let factRealModel = realmModel.fact
+        let factViewModel = FactViewModel(temp: factRealModel?.temp ?? 0,
+                                          windSpeed: factRealModel?.windSpeed ?? 0.0,
+                                          humidity: factRealModel?.humudity ?? 0)
         
-        // Преобразование Forecasts
+        // Forecasts
         let forecastsViewModel = Array(realmModel.forecasts.map {
-            ForecastsViewModel(sunrise: $0.sunrise)
+            ForecastsViewModel(date: $0.date, sunrise: $0.sunrise, sunset: $0.sunset)
         })
         
         return WeatherViewModel(nowDt: realmModel.nowDt, fact: factViewModel, forecasts: forecastsViewModel)
