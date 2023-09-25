@@ -56,7 +56,8 @@ class TopContentView: UIView {
         
         self.dayCardView.currentDateLabel.text = nowDt
         self.dayCardView.tempLabel.text = "\(fact.temp)"
-        self.dayCardView.sunriseLabel.text = "\(forecasts.first?.sunrise ?? "N/A")"
+        self.dayCardView.sunriseLabel.text = forecasts.first?.sunrise ?? "N/A"
+        self.dayCardView.sunsetLabel.text = forecasts.first?.sunset ?? "N/A"
     }
 
     private func setupConstraints() {

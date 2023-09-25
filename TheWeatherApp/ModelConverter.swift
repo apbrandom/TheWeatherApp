@@ -20,7 +20,7 @@ class ModelConverter {
         let realmModelFact = FactRealm()
         realmModelFact.temp = networkModel.fact.temp
         realmModelFact.windSpeed = networkModel.fact.windSpeed
-        realmModelFact.humudity = networkModel.fact.humidity
+        realmModelFact.humidity = networkModel.fact.humidity
         realmModel.fact = realmModelFact
                 
         //Forecasts
@@ -40,7 +40,7 @@ class ModelConverter {
         let factRealModel = realmModel.fact
         let factViewModel = FactViewModel(temp: factRealModel?.temp ?? 0,
                                           windSpeed: factRealModel?.windSpeed ?? 0.0,
-                                          humidity: factRealModel?.humudity ?? 0)
+                                          humidity: factRealModel?.humidity ?? 0)
         
         // Forecasts
         let forecastsViewModel = Array(realmModel.forecasts.map {

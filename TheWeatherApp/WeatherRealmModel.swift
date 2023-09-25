@@ -23,13 +23,13 @@ class WeatherRealmModel: Object {
 class FactRealm: Object {
     @Persisted var temp: Int = 0
     @Persisted var windSpeed: Double = 0.0
-    @Persisted var humudity: Int = 0
+    @Persisted var humidity: Int = 0
     
     convenience init(temp: Int) {
         self.init()
         self.temp = temp
         self.windSpeed = windSpeed
-        self.humudity = humudity
+        self.humidity = humidity
     }
 }
 
