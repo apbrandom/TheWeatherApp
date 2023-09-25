@@ -32,7 +32,7 @@ class DayCardView: UIView {
     lazy var sunriseLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = .boldSystemFont(ofSize: 15)
         label.text = "-"
         return label
     }()
@@ -46,16 +46,16 @@ class DayCardView: UIView {
     lazy var sunsetLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 16)
+        label.font = .boldSystemFont(ofSize: 15)
         label.text = "--"
         return label
     }()
     
     private lazy var dayCardVstack: UIStackView = {
         let stack = UIStackView()
-        stack.backgroundColor = .systemGray
         stack.axis = .vertical
-        stack.spacing = 5
+        stack.spacing = 7
+        stack.alignment = .center
         stack.distribution = .fillEqually
         return stack
     }()
@@ -64,7 +64,7 @@ class DayCardView: UIView {
     lazy var tempMinMaxLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 16)
         label.text = "5/10"
         return label
     }()
@@ -89,7 +89,8 @@ class DayCardView: UIView {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 5
-        stack.distribution = .fillEqually
+        stack.alignment = .center
+        stack.distribution = .equalSpacing
         return stack
     }()
     
@@ -104,15 +105,14 @@ class DayCardView: UIView {
     //MARK: - HStack
     private lazy var sunIndexImage: UIImageView = {
         let image = UIImageView(image: .sunIndex)
-        image.tintColor = .yell
         return image
     }()
     
     lazy var sunIndexLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .yell
+        label.textColor = .white
         label.font = .systemFont(ofSize: 16)
-        label.text = "--"
+        label.text = "-"
         return label
     }()
     
@@ -124,7 +124,7 @@ class DayCardView: UIView {
     
     lazy var windSpeedLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .yell
+        label.textColor = .white
         label.font = .systemFont(ofSize: 16)
         label.text = "-"
         return label
@@ -132,13 +132,13 @@ class DayCardView: UIView {
     
     private lazy var humidityImage: UIImageView = {
         let image = UIImageView(image: .humidity)
-        image.tintColor = .yell
+        image.tintColor = .white
         return image
     }()
     
     lazy var humidityLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .yell
+        label.textColor = .white
         label.font = .systemFont(ofSize: 16)
         label.text = "-"
         return label
@@ -218,36 +218,35 @@ class DayCardView: UIView {
             make.top.equalTo(sunsetImage.snp.bottom).offset(5)
         }
         
-//        dayCardVstack.snp.makeConstraints { make in
-//            <#code#>
-//        }
+        dayCardVstack.snp.makeConstraints { make in
+            make.top.equalTo(ellipseImage.snp.top).inset(10)
+            make.bottom.equalToSuperview().inset(22)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().inset(50)
+        }
         
-//        tempLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.centerY.equalToSuperview().offset(-30)
-//        }
+        dayCardHstack.snp.makeConstraints { make in
+            make.width.equalTo(dayCardVstack).inset(40)
+        }
         
-//        gradusImage.snp.makeConstraints { make in
-//            make.top.equalTo(tempLabel.snp.top)
-//            make.height.width.equalTo(5)
-//            make.left.equalTo(tempLabel.snp.right).offset(2)
-            }
+        sunIndexImage.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+        }
         
-
-
+        windSpeedImage.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+        }
         
-
+        humidityImage.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+        }
         
-
+        gradusImage.snp.makeConstraints { make in
+            make.top.equalTo(tempLabel.snp.top).offset(-5)
+            make.height.width.equalTo(5)
+            make.left.equalTo(tempLabel.snp.right).offset(2)
+        }
         
- 
-//        
-//        currentDateLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.bottom.equalToSuperview().inset(20)
-//        }
-        
-
-//    }
+    }
     
 }
