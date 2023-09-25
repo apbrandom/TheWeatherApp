@@ -53,7 +53,7 @@ class DayCardView: UIView {
     
     private lazy var dayCardVstack: UIStackView = {
         let stack = UIStackView()
-        stack.backgroundColor = .sys
+        stack.backgroundColor = .systemGray
         stack.axis = .vertical
         stack.spacing = 5
         stack.distribution = .fillEqually
@@ -218,9 +218,9 @@ class DayCardView: UIView {
             make.top.equalTo(sunsetImage.snp.bottom).offset(5)
         }
         
-        dayCardVstack.snp.makeConstraints { make in
-            <#code#>
-        }
+//        dayCardVstack.snp.makeConstraints { make in
+//            <#code#>
+//        }
         
 //        tempLabel.snp.makeConstraints { make in
 //            make.centerX.equalToSuperview()
@@ -231,7 +231,7 @@ class DayCardView: UIView {
 //            make.top.equalTo(tempLabel.snp.top)
 //            make.height.width.equalTo(5)
 //            make.left.equalTo(tempLabel.snp.right).offset(2)
-//            }
+            }
         
 
 
@@ -248,6 +248,6 @@ class DayCardView: UIView {
 //        }
         
 
-    }
+//    }
     
 }
