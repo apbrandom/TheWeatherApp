@@ -16,9 +16,7 @@ class RealmService {
                     migrationBlock: { migration, oldSchemaVersion in
                         // код миграции
                         if oldSchemaVersion < 1 {
-                            // В вашем случае новое поле forecasts было добавлено.
-                            // Нет необходимости делать что-то специальное здесь,
-                            // так как Realm автоматически обнаружит новое свойство и добавит его.
+
                         }
                     }
                 )
@@ -56,7 +54,7 @@ class RealmService {
         existing.nowDt = newModel.nowDt
         existing.fact = newModel.fact
         existing.forecasts = newModel.forecasts
-        // Добавьте другие поля для обновления, если нужно
+        
     }
     
     private func save(_ model: WeatherRealmModel, in realm: Realm) {

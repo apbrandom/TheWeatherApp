@@ -7,11 +7,13 @@
 
 let apiKey = "5ce5fb1b-d47e-432e-8825-b5a2577f089b"
 
-var apiKey1 = ""
-
 import Foundation
 
-class NetworkService {
+enum NetworkError: Error {
+    case badURL, badRequest, badResponse, invalidData, invalidDecoding
+}
+
+final class NetworkService {
     
     internal func createURL() -> URL? {
         let baseURL = "https://api.weather.yandex.ru/v2/forecast?"

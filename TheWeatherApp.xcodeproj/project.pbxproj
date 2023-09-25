@@ -30,7 +30,6 @@
 		CBFACD792AB34AAF00DD033F /* DetailWeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFACD782AB34AAF00DD033F /* DetailWeatherViewModel.swift */; };
 		CBFACD7B2AB34B2400DD033F /* DetailWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFACD7A2AB34B2400DD033F /* DetailWeatherViewController.swift */; };
 		CBFACD7E2AB3653400DD033F /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFACD7D2AB3653400DD033F /* NetworkService.swift */; };
-		CBFACD802AB4638700DD033F /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFACD7F2AB4638700DD033F /* NetworkError.swift */; };
 		CBFACD8B2AB71FFE00DD033F /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFACD8A2AB71FFE00DD033F /* WeatherViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,7 +55,6 @@
 		CBFACD782AB34AAF00DD033F /* DetailWeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherViewModel.swift; sourceTree = "<group>"; };
 		CBFACD7A2AB34B2400DD033F /* DetailWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherViewController.swift; sourceTree = "<group>"; };
 		CBFACD7D2AB3653400DD033F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		CBFACD7F2AB4638700DD033F /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		CBFACD8A2AB71FFE00DD033F /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -195,7 +193,6 @@
 			isa = PBXGroup;
 			children = (
 				CBFACD7D2AB3653400DD033F /* NetworkService.swift */,
-				CBFACD7F2AB4638700DD033F /* NetworkError.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -281,7 +278,6 @@
 			files = (
 				CBA1E8622ABC6EAA00BDA620 /* RealmService.swift in Sources */,
 				CB699FFD2AB1ADA70072A864 /* MidContentView.swift in Sources */,
-				CBFACD802AB4638700DD033F /* NetworkError.swift in Sources */,
 				CB9CBC322AB1C07C0084CCB8 /* NavigationTitleView.swift in Sources */,
 				CBFACD752AB208A600DD033F /* MainWeatherViewModel.swift in Sources */,
 				CBFACD732AB205A000DD033F /* Coordinator.swift in Sources */,
