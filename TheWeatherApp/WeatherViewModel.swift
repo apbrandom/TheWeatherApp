@@ -23,10 +23,17 @@ struct ForecastsViewModel: Decodable {
     let date: String //
     let sunrise: String
     let sunset: String //
-//    let parts: Parts
+    let parts: PartsViewModel
 }
 
+struct PartsViewModel: Decodable {
+    let day: PartDetailsViewModel
+}
 
+struct PartDetailsViewModel: Decodable {
+    let tempMin: Int
+    let tempMax: Int
+}
     
     
     

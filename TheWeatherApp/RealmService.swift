@@ -8,11 +8,10 @@
 import RealmSwift
 
 class RealmService {
-    
     private var realm: Realm? {
             do {
                 let config = Realm.Configuration(
-                    schemaVersion: 5,  // увеличьте это значение на 1 при каждой новой миграции
+                    schemaVersion: 6,  // увеличьте это значение на 1 при каждой новой миграции
                     migrationBlock: { migration, oldSchemaVersion in
                         // код миграции
                         if oldSchemaVersion < 1 {
@@ -54,7 +53,6 @@ class RealmService {
         existing.nowDt = newModel.nowDt
         existing.fact = newModel.fact
         existing.forecasts = newModel.forecasts
-        
     }
     
     private func save(_ model: WeatherRealmModel, in realm: Realm) {

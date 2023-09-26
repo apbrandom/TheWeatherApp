@@ -56,7 +56,7 @@ class DayCardView: UIView {
         stack.axis = .vertical
         stack.spacing = 7
         stack.alignment = .center
-        stack.distribution = .fillEqually
+        stack.distribution = .fillProportionally
         return stack
     }()
     
@@ -112,7 +112,7 @@ class DayCardView: UIView {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 16)
-        label.text = "-"
+        label.text = "0"
         return label
     }()
     

@@ -53,7 +53,8 @@ class TopContentView: UIView {
         guard let nowDt = viewModel.convertDate(from: weatherModel.nowDt) else { return }
         let fact = weatherModel.fact
         let forecasts = weatherModel.forecasts
-        
+        let tempMin = forecasts.first?.parts.day.tempMin ?? 0
+        let tempMax = forecasts.first?.parts.day.tempMax ?? 0
         
         self.dayCardView.tempLabel.text = "\(fact.temp)"
         self.dayCardView.sunriseLabel.text = forecasts.first?.sunrise ?? "N/A"
@@ -61,6 +62,7 @@ class TopContentView: UIView {
         self.dayCardView.humidityLabel.text = "\(fact.humidity)%"
         self.dayCardView.currentDateLabel.text = nowDt
         self.dayCardView.windSpeedLabel.text = "\(fact.windSpeed)"
+        self.dayCardView.tempMinMaxLabel.text = "\(tempMin)/\(tempMax)"
     }
 
     private func setupConstraints() {

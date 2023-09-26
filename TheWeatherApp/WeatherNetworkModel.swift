@@ -23,13 +23,17 @@ struct Forecasts: Decodable {
     let date: String //
     let sunrise: String
     let sunset: String //
-//    let parts: Parts
+    let parts: Parts
 }
 
-//struct Parts: Decodable {
-//    let day:
-//}
+struct Parts: Decodable {
+    let day: PartDetails
+}
 
+struct PartDetails: Decodable {
+    let tempMin: Int
+    let tempMax: Int
+}
 
 
 

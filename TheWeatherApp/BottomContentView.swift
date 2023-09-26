@@ -17,6 +17,7 @@ class BottomContentView: UIView {
         return label
     }()
     
+    
     // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,6 +44,7 @@ class BottomContentView: UIView {
         titleLabel.snp.makeConstraints { make in
             make.center.equalTo(snp.center)
         }
+        
     }
 
 }

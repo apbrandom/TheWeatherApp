@@ -18,6 +18,12 @@ class MidContentView: UIView {
         return label
     }()
     
+    private lazy var hourlyWeatherCardCollectionView: HourlyWeatherCardCollectionReusableView = {
+        let collection = HourlyWeatherCardCollectionReusableView()
+        collection.backgroundColor = .magenta
+        return collection
+    }()
+    
     // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,6 +40,7 @@ class MidContentView: UIView {
     // MARK: - Private Methods
     private func setupSubviews() {
         addSubview(titleLabel)
+        addSubview(hourlyWeatherCardCollectionView)
     }
     
     private func setupView() {
@@ -43,6 +50,10 @@ class MidContentView: UIView {
     private func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.center.equalTo(snp.center)
+        }
+        
+        hourlyWeatherCardCollectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 }
