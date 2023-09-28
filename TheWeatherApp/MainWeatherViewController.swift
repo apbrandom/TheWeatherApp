@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import Combine
 
 class MainWeatherViewController: UIViewController {
     
@@ -42,7 +41,7 @@ class MainWeatherViewController: UIViewController {
     }()
     
     private lazy var midView: MidContentView = {
-        let view = MidContentView()
+        let view = MidContentView(viewModel: viewModel)
         return view
     }()
     

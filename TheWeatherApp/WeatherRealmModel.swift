@@ -24,6 +24,7 @@ class ForecastsRealm: Object {
     @Persisted var sunrise: String
     @Persisted var sunset: String
     @Persisted var parts: PartsRealm?
+    @Persisted var hours = List<HoursRealm>()
 }
 
 class PartsRealm: Object {
@@ -35,6 +36,11 @@ class PartDeteilsRealm: Object {
     @Persisted var tempMax: Int
 }
 
+class HoursRealm: Object {
+    @Persisted var hour: String
+    @Persisted var temp: Int
+    @Persisted var condition: String
+}
 
 
 

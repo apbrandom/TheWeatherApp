@@ -9,22 +9,13 @@ import UIKit
 import SnapKit
 
 class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .clear
-        cv.dataSource = self
-        cv.delegate = self
-        cv.register(WeatherCardViewCell.self, forCellWithReuseIdentifier: "WeatherCardViewCell")
-        return cv
-    }()
-    
-    // MARK: - Initializers
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+
+    var viewModel: MainWeatherViewModel
+
+    init(viewModel: MainWeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero) // Это должно быть перед setupSubviews() и setupConstraints()
+
         setupSubviews()
         setupConstraints()
     }
@@ -33,6 +24,18 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
         return nil
     }
     
+    private lazy var collectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(WeatherCardViewCell.self, forCellWithReuseIdentifier: "WeatherCardViewCell")
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+        
     private func setupSubviews() {
         addSubview(collectionView)
     }
@@ -46,7 +49,7 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 24 // или сколько угодно
+        return viewModel.hourlyWeatherData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -54,15 +57,33 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
             return UICollectionViewCell()
         }
         
-        // Здесь настройте данные для cell, если нужно
+        let weatherData =  viewModel.hourlyWeatherData[indexPath.item]
+        print("- - - WEATHER DATA :\(weatherData)")
+        cell.temperatureLabel.text = "\(weatherData.temp)°"
+        cell.hourTimeIntervalLabel.text = weatherData.hour
+        
         
         return cell
     }
     
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) async -> UICollectionViewCell {
+//
+//        
+//
+//    }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = self.frame.width / 6 // чтобы влезло 6 карточек горизонтально
+        let width = bounds.size.width / 8.5 // чтобы влезло 6 карточек горизонтально
         return CGSize(width: width, height: self.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 8)
     }
 }

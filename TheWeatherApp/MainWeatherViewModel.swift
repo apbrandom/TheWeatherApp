@@ -15,6 +15,7 @@ class MainWeatherViewModel {
     
     internal var fixedHeightSubviews: CGFloat = 0.0
     internal let numberOfSubviews: CGFloat = 3.0
+    internal var hourlyWeatherData: [HourViewModel] = []
     
     init(networkService: NetworkService, realmService: RealmService, modelConverter: ModelConverter) {
         self.networkService = networkService
@@ -36,6 +37,11 @@ class MainWeatherViewModel {
             let realmModel = modelConverter.toRealmModel(from: networkModel)
             try await realmService.saveOrUpdateWeather(realmModel)
             guard let viewModel = modelConverter.toViewModel(from: realmModel) else { return nil }
+            
+            if let forecast = viewModel.forecasts.first {
+                self.hourlyWeatherData = forecast.hours
+            }
+            
             return viewModel
         } catch {
             print("Error fetching weather from network: \(error)")

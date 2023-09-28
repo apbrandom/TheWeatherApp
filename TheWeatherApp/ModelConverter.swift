@@ -39,6 +39,7 @@ class ModelConverter {
         realmForecast.sunrise = forecast.sunrise
         realmForecast.sunset = forecast.sunset
         realmForecast.parts = convertToPartsRealm(from: forecast.parts)
+        realmForecast.hours = convertToHoursRealm(from: forecast.hours)
         return realmForecast
     }
     
@@ -53,6 +54,21 @@ class ModelConverter {
         realmDetails.tempMin = details.tempMin
         realmDetails.tempMax = details.tempMax
         return realmDetails
+    }
+    
+    private func convertToHoursRealm(from hours: [Hour]) -> List<HoursRealm> {
+        let realmHoursList = List<HoursRealm>()
+        
+        let realmHours = hours.map { hour -> HoursRealm in
+            let realmHour = HoursRealm()
+            realmHour.hour = hour.hour
+            realmHour.temp = hour.temp
+            realmHour.condition = hour.condition
+            return realmHour
+        }
+        
+        realmHoursList.append(objectsIn: realmHours)
+        return realmHoursList
     }
     
     //MARK: - To ViewModel
@@ -81,10 +97,14 @@ class ModelConverter {
     
     private func convertToForecastsViewModel(from forecast: ForecastsRealm) -> ForecastsViewModel? {
         guard let parts = convertToPartsViewModel(from: forecast.parts) else { return nil }
+        
+        let hourViewModels = convertToHourViewModels(from: forecast.hours)
+        
         return ForecastsViewModel(date: forecast.date,
                                   sunrise: forecast.sunrise,
                                   sunset: forecast.sunset,
-                                  parts: parts)
+                                  parts: parts,
+                                  hours: hourViewModels)
     }
     
     private func convertToPartsViewModel(from parts: PartsRealm?) -> PartsViewModel? {
@@ -99,6 +119,12 @@ class ModelConverter {
         guard let details = details else { return nil }
         return PartDetailsViewModel(tempMin: details.tempMin,
                                     tempMax: details.tempMax)
+    }
+    
+    private func convertToHourViewModels(from hours: List<HoursRealm>) -> [HourViewModel] {
+        return Array(hours.map {
+            HourViewModel(hour: $0.hour, temp: $0.temp, condition: $0.condition)
+        })
     }
 }
 

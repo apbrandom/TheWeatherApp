@@ -24,6 +24,7 @@ struct ForecastsViewModel: Decodable {
     let sunrise: String
     let sunset: String //
     let parts: PartsViewModel
+    let hours: [HourViewModel]
 }
 
 struct PartsViewModel: Decodable {
@@ -36,6 +37,12 @@ struct PartDetailsViewModel: Decodable {
 }
     
     
+struct HourViewModel: Decodable {
+    let hour: String
+    let temp: Int
+    let condition: String
+}
+
     
     
     
