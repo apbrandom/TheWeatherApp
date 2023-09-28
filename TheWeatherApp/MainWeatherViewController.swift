@@ -56,10 +56,18 @@ class MainWeatherViewController: UIViewController {
         
         setupView()
         setupSubviews()
-        setupNavgatoinBar()
         setupConstraints()
+        
+        viewModel.addObserver(topView)
+        viewModel.addObserver(midView)
+        viewModel.addObserver(bottomView)
+        
         Task {
-            await topView.bindToViewModel(viewModel)
+            do {
+                _ = try await viewModel.fetchWeather()
+            } catch {
+                print("Error: \(error)")
+            }
         }
     }
     
@@ -82,19 +90,6 @@ class MainWeatherViewController: UIViewController {
     //MARK: - Private Methods
     private func setupView() {
         view.backgroundColor = .white
-    }
-    
-    private func setupNavgatoinBar() {
-        navigationItem.title = "City, Country"
-        
-        let leftBarItem = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(leftBarButtonTapped))
-        let rightBarItem = UIBarButtonItem(image: UIImage(named: "location"), style: .plain, target: self, action: #selector(rightBarButtonTapped))
-        
-        navigationItem.leftBarButtonItem = leftBarItem
-        navigationItem.rightBarButtonItem = rightBarItem
-        
-        navigationItem.leftBarButtonItem?.tintColor = .text
-        navigationItem.rightBarButtonItem?.tintColor = .text
     }
     
     private func adjustSubviews() {

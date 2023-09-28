@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol WeatherObserver {
+    func didUpdateWeather(_ weather: WeatherViewModel)
+}
+
 class MainWeatherViewModel {
     
     private let networkService: NetworkService
@@ -15,7 +19,7 @@ class MainWeatherViewModel {
     
     internal var fixedHeightSubviews: CGFloat = 0.0
     internal let numberOfSubviews: CGFloat = 3.0
-    internal var hourlyWeatherData: [HourViewModel] = []
+    private var observers: [WeatherObserver] = []
     
     init(networkService: NetworkService, realmService: RealmService, modelConverter: ModelConverter) {
         self.networkService = networkService
@@ -31,6 +35,16 @@ class MainWeatherViewModel {
         return numberOfSubviews
     }
     
+    func addObserver(_ observer: WeatherObserver) {
+        observers.append(observer)
+    }
+    
+    private func notifyObservers(_ weather: WeatherViewModel) {
+        for observer in observers {
+            observer.didUpdateWeather(weather)
+        }
+    }
+    
     func fetchWeather() async throws -> WeatherViewModel? {
         do {
             let networkModel = try await networkService.fetchNetworkModel()
@@ -38,8 +52,9 @@ class MainWeatherViewModel {
             try await realmService.saveOrUpdateWeather(realmModel)
             guard let viewModel = modelConverter.toViewModel(from: realmModel) else { return nil }
             
-            if let forecast = viewModel.forecasts.first {
-                self.hourlyWeatherData = forecast.hours
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.notifyObservers(viewModel)
             }
             
             return viewModel

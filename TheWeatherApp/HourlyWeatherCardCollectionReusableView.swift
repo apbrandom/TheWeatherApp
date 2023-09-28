@@ -9,12 +9,15 @@ import UIKit
 import SnapKit
 
 class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    var hourlyWeatherData: [HourViewModel] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
 
-    var viewModel: MainWeatherViewModel
-
-    init(viewModel: MainWeatherViewModel) {
-        self.viewModel = viewModel
-        super.init(frame: .zero) // Это должно быть перед setupSubviews() и setupConstraints()
+    init() {
+        super.init(frame: .zero) 
 
         setupSubviews()
         setupConstraints()
@@ -49,7 +52,7 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.hourlyWeatherData.count
+        return hourlyWeatherData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -57,21 +60,13 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
             return UICollectionViewCell()
         }
         
-        let weatherData =  viewModel.hourlyWeatherData[indexPath.item]
-        print("- - - WEATHER DATA :\(weatherData)")
-        cell.temperatureLabel.text = "\(weatherData.temp)°"
-        cell.hourTimeIntervalLabel.text = weatherData.hour
-        
-        
+        let hourData = hourlyWeatherData[indexPath.row]
+        cell.hourTimeIntervalLabel.text = "\(hourData.hour)"
+        cell.temperatureLabel.text = "\(hourData.temp)"
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) async -> UICollectionViewCell {
-//
-//        
-//
-//    }
-    
+
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

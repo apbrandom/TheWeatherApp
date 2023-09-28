@@ -10,7 +10,6 @@ import SnapKit
 
 class MidContentView: UIView {
     
-    
     var viewModel: MainWeatherViewModel
     
     init(viewModel: MainWeatherViewModel) {
@@ -24,9 +23,7 @@ class MidContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    
     // MARK: - Subviews
-    
     
     private lazy var twentyFourHoursButton = {
         let button = UIButton()
@@ -44,14 +41,13 @@ class MidContentView: UIView {
         let attributedTitle = AttributedTitle.getUnderlineStyle(title: "25 дней",
                                                                 fontSize: 16,
                                                                 kern: 0.2)
-        
         button.setAttributedTitle(attributedTitle, for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
     }()
     
     private lazy var hourlyWeatherCardCollectionView = {
-        let collection = HourlyWeatherCardCollectionReusableView(viewModel: viewModel)
+        let collection = HourlyWeatherCardCollectionReusableView()
         collection.backgroundColor = .magenta
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
@@ -78,7 +74,6 @@ class MidContentView: UIView {
     }
     
     private func setupConstraints() {
-        
         hourlyWeatherCardCollectionView.snp.makeConstraints { make in
             make.top.equalTo(twentyFourHoursButton.snp.bottom).offset(30)
             make.bottom.equalTo(dailyWeatherLabel.snp.top).offset(-35)
@@ -103,3 +98,16 @@ class MidContentView: UIView {
     }
 }
 
+extension MidContentView: WeatherObserver {
+    private func updateUI(with weatherModel: WeatherViewModel) {
+            guard let hourlyWeather = weatherModel.forecasts.first?.hours else { return }
+            hourlyWeatherCardCollectionView.hourlyWeatherData = hourlyWeather
+        }
+
+    
+    func didUpdateWeather(_ weather: WeatherViewModel) {
+        DispatchQueue.main.async { [weak self] in
+            self?.updateUI(with: weather)
+        }
+    }
+}

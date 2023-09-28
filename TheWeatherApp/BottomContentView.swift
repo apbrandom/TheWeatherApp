@@ -46,5 +46,16 @@ class BottomContentView: UIView {
         }
         
     }
+    
+    private func updateUI(with weatherModel: WeatherViewModel) {
+        
+    }
+}
 
+extension BottomContentView: WeatherObserver {
+    func didUpdateWeather(_ weather: WeatherViewModel) {
+        DispatchQueue.main.async { [weak self] in
+            self?.updateUI(with: weather)
+        }
+    }
 }
