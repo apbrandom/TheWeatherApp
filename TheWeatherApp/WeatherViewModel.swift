@@ -13,13 +13,13 @@ struct WeatherViewModel {
     let forecasts: [ForecastsViewModel]
 }
 
-struct FactViewModel: Decodable {
+struct FactViewModel {
     let temp: Int
     let windSpeed: Double //
     let humidity: Int //
 }
 
-struct ForecastsViewModel: Decodable {
+struct ForecastsViewModel {
     let date: String //
     let sunrise: String
     let sunset: String //
@@ -27,17 +27,17 @@ struct ForecastsViewModel: Decodable {
     let hours: [HourViewModel]
 }
 
-struct PartsViewModel: Decodable {
+struct PartsViewModel {
     let day: PartDetailsViewModel
 }
 
-struct PartDetailsViewModel: Decodable {
+struct PartDetailsViewModel {
     let tempMin: Int
     let tempMax: Int
 }
     
     
-struct HourViewModel: Decodable {
+struct HourViewModel {
     let hour: String
     let temp: Int
     let condition: String

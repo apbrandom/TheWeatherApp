@@ -47,9 +47,7 @@ class MidContentView: UIView {
     }()
     
     private lazy var hourlyWeatherCardCollectionView = {
-        let collection = HourlyWeatherCardCollectionReusableView()
-        collection.backgroundColor = .magenta
-        collection.translatesAutoresizingMaskIntoConstraints = false
+        let collection = HourlyWeatherCardCollectionReusableView(viewModel: viewModel)
         return collection
     }()
     
@@ -101,7 +99,7 @@ class MidContentView: UIView {
 extension MidContentView: WeatherObserver {
     private func updateUI(with weatherModel: WeatherViewModel) {
             guard let hourlyWeather = weatherModel.forecasts.first?.hours else { return }
-            hourlyWeatherCardCollectionView.hourlyWeatherData = hourlyWeather
+            hourlyWeatherCardCollectionView.hoursWeatherData = hourlyWeather
         }
 
     

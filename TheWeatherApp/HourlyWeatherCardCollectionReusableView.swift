@@ -10,14 +10,30 @@ import SnapKit
 
 class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var hourlyWeatherData: [HourViewModel] = [] {
+    var viewModel: MainWeatherViewModel
+    
+    var hoursWeatherData: [HourViewModel] = [] {
         didSet {
             collectionView.reloadData()
         }
     }
-
-    init() {
-        super.init(frame: .zero) 
+    
+    //MARK: - Subviews
+    private lazy var collectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(WeatherCardViewCell.self, forCellWithReuseIdentifier: "WeatherCardViewCell")
+        return collectionView
+    }()
+    
+    // MARK: - Initializers
+    init(viewModel: MainWeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
 
         setupSubviews()
         setupConstraints()
@@ -27,18 +43,6 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
         return nil
     }
     
-    private lazy var collectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(WeatherCardViewCell.self, forCellWithReuseIdentifier: "WeatherCardViewCell")
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
-        
     private func setupSubviews() {
         addSubview(collectionView)
     }
@@ -49,10 +53,17 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
         }
     }
     
+    func convertHour(_ hour: String) -> String {
+        if let hourInt = Int(hour) {
+            return String(format: "%02d:00", hourInt)
+        }
+        return "Invalid hour"
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return hourlyWeatherData.count
+        return hoursWeatherData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -60,9 +71,12 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
             return UICollectionViewCell()
         }
         
-        let hourData = hourlyWeatherData[indexPath.row]
-        cell.hourTimeIntervalLabel.text = "\(hourData.hour)"
+        let hourData = hoursWeatherData[indexPath.row]
+        cell.hourTimeIntervalLabel.text = convertHour(hourData.hour)
         cell.temperatureLabel.text = "\(hourData.temp)"
+        viewModel.setWeatherCondition(from: hourData.condition)
+        cell.conditionIconImageView.image = viewModel.getWeatherImage()
+        
         return cell
     }
     

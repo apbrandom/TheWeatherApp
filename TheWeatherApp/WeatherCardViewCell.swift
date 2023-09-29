@@ -13,13 +13,11 @@ class WeatherCardViewCell: UICollectionViewCell {
         label.textColor = .black
         label.text = "10"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var conditionIconImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = .sun
         return imageView
     }()
@@ -27,12 +25,10 @@ class WeatherCardViewCell: UICollectionViewCell {
     lazy var hourTimeIntervalLabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "10:10"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "10:00"
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -53,24 +49,26 @@ class WeatherCardViewCell: UICollectionViewCell {
     }
     
     private func setupView() {
-        backgroundColor = .brown
+        backgroundColor = .white
         layer.cornerRadius = 25
+        layer.borderWidth = 0.5
+        layer.borderColor = UIColor.tintColor.cgColor
     }
     
     private func setupConstraints() {
-        
         temperatureLabel.snp.makeConstraints { make in
             make.centerX.equalTo(snp.centerX)
-            make.bottom.equalToSuperview().inset(5)
+            make.bottom.equalToSuperview().inset(10)
         }
         
         conditionIconImageView.snp.makeConstraints { make in
             make.center.equalTo(snp.center)
+            make.width.height.lessThanOrEqualTo(20)
         }
         
         hourTimeIntervalLabel.snp.makeConstraints { make in
             make.centerX.equalTo(snp.centerX)
-            make.top.equalToSuperview().inset(10)
+            make.top.equalToSuperview().inset(15)
         }
         
     }

@@ -46,7 +46,7 @@ class MainWeatherViewController: UIViewController {
     }()
     
     private lazy var bottomView: BottomContentView = {
-        let view = BottomContentView()
+        let view = BottomContentView(viewModel: viewModel)
         return view
     }()
     

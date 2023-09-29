@@ -9,18 +9,19 @@ import UIKit
 
 class BottomContentView: UIView {
     
+    var viewModel: MainWeatherViewModel
+    
     // MARK: - Subviews
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        return label
+    
+    private lazy var dailyWeatherCollectionView = {
+        let collection = DailyWeatherCollectionReusableView(viewModel: viewModel)
+        return collection
     }()
     
-    
     // MARK: - Initializers
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: MainWeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         
         setupView()
         setupSubviews()
@@ -33,26 +34,31 @@ class BottomContentView: UIView {
     
     // MARK: - Private Methods
     private func setupView() {
-       backgroundColor = .white
+        backgroundColor = .white
     }
     
     private func setupSubviews() {
-        addSubview(titleLabel)
+        addSubview(dailyWeatherCollectionView)
     }
     
     private func setupConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.center.equalTo(snp.center)
+        dailyWeatherCollectionView.snp.makeConstraints { make in
+            make.bottom.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
         }
         
     }
     
-    private func updateUI(with weatherModel: WeatherViewModel) {
-        
-    }
+    
 }
 
 extension BottomContentView: WeatherObserver {
+    
+    private func updateUI(with weatherModel: WeatherViewModel) {
+        let dailyWeather = weatherModel.forecasts 
+        dailyWeatherCollectionView.dailyWeatherData = dailyWeather
+    }
+    
     func didUpdateWeather(_ weather: WeatherViewModel) {
         DispatchQueue.main.async { [weak self] in
             self?.updateUI(with: weather)

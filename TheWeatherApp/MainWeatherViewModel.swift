@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol WeatherObserver {
     func didUpdateWeather(_ weather: WeatherViewModel)
@@ -20,6 +21,8 @@ class MainWeatherViewModel {
     internal var fixedHeightSubviews: CGFloat = 0.0
     internal let numberOfSubviews: CGFloat = 3.0
     private var observers: [WeatherObserver] = []
+    var weatherCondition: WeatherCondition?
+    var weatherForecasts: [ForecastsViewModel?] = []
     
     init(networkService: NetworkService, realmService: RealmService, modelConverter: ModelConverter) {
         self.networkService = networkService
@@ -54,7 +57,9 @@ class MainWeatherViewModel {
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
+                weatherForecasts = viewModel.forecasts
                 self.notifyObservers(viewModel)
+                
             }
             
             return viewModel
@@ -91,12 +96,58 @@ class MainWeatherViewModel {
         return resultDate
     }
     
+    func setWeatherCondition(from string: String) {
+        weatherCondition = WeatherCondition(rawValue: string)
+    }
+    
+    func getWeatherImage() -> UIImage? {
+            guard let condition = weatherCondition else { return nil }
+            
+            switch condition {
+            case .clear:
+                return UIImage(resource: .sun)
+            case .partlyCloudy:
+                return UIImage(resource: .sunIndex)
+            case .cloudy:
+                return UIImage(resource: .cloudy)
+            case .overcast:
+                 return UIImage(resource: .overcast)
+            case .rain:
+                return UIImage(resource: .humidity)
+            case .heavyRain:
+                return UIImage(resource: .humidity)
+            case .lightRain:
+                return UIImage(resource: .humidity)
+            default:
+                return UIImage(systemName: "cloud.sun")
+                
+            }
+        }
+    
+    
     enum WeatherError: Error {
         case noCachedData
         case failedToFetchData
     }
 }
 
-
+enum WeatherCondition: String {
+    case clear
+    case partlyCloudy = "partly-cloudy"
+    case cloudy
+    case overcast
+    case rain
+    case lightRain =  "light-rain"
+    case heavyRain = "heavy-rain"
+    case showers
+    case wetSnow = "wet-snow"
+    case lightSnow = "light-snow"
+    case snow
+    case snowShowers = "snow-showers"
+    case hail
+    case thunderstorm
+    case thunderstormWithRain = "thunderstorm-with-rain"
+    case thunderstormWithHail = "thunderstorm-with-hail"
+}
 
 
