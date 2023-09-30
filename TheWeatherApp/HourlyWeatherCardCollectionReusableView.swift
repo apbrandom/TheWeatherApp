@@ -73,7 +73,7 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
         
         let hourData = hoursWeatherData[indexPath.row]
         cell.hourTimeIntervalLabel.text = convertHour(hourData.hour)
-        cell.temperatureLabel.text = "\(hourData.temp)"
+        cell.temperatureLabel.text = "\(hourData.temp)\u{00B0}"
         viewModel.setWeatherCondition(from: hourData.condition)
         cell.conditionIconImageView.image = viewModel.getWeatherImage()
         

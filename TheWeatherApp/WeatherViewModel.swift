@@ -34,6 +34,7 @@ struct PartsViewModel {
 struct PartDetailsViewModel {
     let tempMin: Int
     let tempMax: Int
+    let precProb: Int
 }
     
     

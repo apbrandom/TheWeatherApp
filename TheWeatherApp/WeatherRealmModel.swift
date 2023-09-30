@@ -34,6 +34,7 @@ class PartsRealm: Object {
 class PartDeteilsRealm: Object {
     @Persisted var tempMin: Int
     @Persisted var tempMax: Int
+    @Persisted var precProb: Int
 }
 
 class HoursRealm: Object {

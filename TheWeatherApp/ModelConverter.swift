@@ -53,6 +53,7 @@ class ModelConverter {
         let realmDetails = PartDeteilsRealm()
         realmDetails.tempMin = details.tempMin
         realmDetails.tempMax = details.tempMax
+        realmDetails.precProb = details.precProb
         return realmDetails
     }
     
@@ -118,7 +119,8 @@ class ModelConverter {
     private func convertToPartDetailsViewModel(from details: PartDeteilsRealm?) -> PartDetailsViewModel? {
         guard let details = details else { return nil }
         return PartDetailsViewModel(tempMin: details.tempMin,
-                                    tempMax: details.tempMax)
+                                    tempMax: details.tempMax,
+                                    precProb: details.precProb)
     }
     
     private func convertToHourViewModels(from hours: List<HoursRealm>) -> [HourViewModel] {

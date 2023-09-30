@@ -11,47 +11,39 @@ import SnapKit
 class DayCardView: UIView {
     
     //MARK: - Subviews
-    private lazy var ellipseImage: UIImageView = {
+    private lazy var ellipseImage = {
         let image = UIImageView(image: .ellipse)
         image.tintColor = .yell
         return image
     }()
     
-    private lazy var gradusImage: UIImageView = {
-        let image = UIImageView(image: .gradus)
-        image.tintColor = .white
-        return image
-    }()
-    
-    private lazy var sunriseImage: UIImageView = {
+    private lazy var sunriseImage = {
         let image = UIImageView(image: .sunrise)
         image.tintColor = .yell
         return image
     }()
     
-    lazy var sunriseLabel: UILabel = {
+    lazy var sunriseLabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .boldSystemFont(ofSize: 15)
-        label.text = "-"
         return label
     }()
     
-    private lazy var sunsetImage: UIImageView = {
+    private lazy var sunsetImage = {
         let image = UIImageView(image: .sunset)
         image.tintColor = .yell
         return image
     }()
     
-    lazy var sunsetLabel: UILabel = {
+    lazy var sunsetLabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .boldSystemFont(ofSize: 15)
-        label.text = "--"
         return label
     }()
     
-    private lazy var dayCardVstack: UIStackView = {
+    private lazy var dayCardVstack = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 7
@@ -65,7 +57,6 @@ class DayCardView: UIView {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 16)
-        label.text = "5/10"
         return label
     }()
     
@@ -73,19 +64,17 @@ class DayCardView: UIView {
         let label = UILabel()
         label.textColor = .white
         label.font = .boldSystemFont(ofSize: 40)
-        label.text = "--"
         return label
     }()
     
-    lazy var condintionLabel: UILabel = {
+    lazy var condintionLabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 16)
-        label.text = "Возможен небольшой дождь"
         return label
     }()
     
-    private lazy var dayCardHstack: UIStackView = {
+    private lazy var dayCardHstack = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 5
@@ -94,53 +83,49 @@ class DayCardView: UIView {
         return stack
     }()
     
-    lazy var currentDateLabel: UILabel = {
+    lazy var currentDateLabel = {
         let label = UILabel()
         label.textColor = .yell
         label.font = .boldSystemFont(ofSize: 16)
-        label.text = "--"
         return label
     }()
     
     //MARK: - HStack
-    private lazy var sunIndexImage: UIImageView = {
-        let image = UIImageView(image: .sunIndex)
+    private lazy var chanceOfRainImage = {
+        let image = UIImageView(image: .chanceRain)
         return image
     }()
     
-    lazy var sunIndexLabel: UILabel = {
+    lazy var chanceOfRainLabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 16)
-        label.text = "0"
         return label
     }()
     
-    private lazy var windSpeedImage: UIImageView = {
+    private lazy var windSpeedImage = {
         let image = UIImageView(image: .windSpeed)
         image.tintColor = .yell
         return image
     }()
     
-    lazy var windSpeedLabel: UILabel = {
+    lazy var windSpeedLabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 16)
-        label.text = "-"
         return label
     }()
     
-    private lazy var humidityImage: UIImageView = {
+    private lazy var humidityImage = {
         let image = UIImageView(image: .humidity)
         image.tintColor = .white
         return image
     }()
     
-    lazy var humidityLabel: UILabel = {
+    lazy var humidityLabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 16)
-        label.text = "-"
         return label
     }()
     
@@ -164,7 +149,6 @@ class DayCardView: UIView {
     
     private func addSubviews() {
         addSubview(ellipseImage)
-        addSubview(gradusImage)
         addSubview(sunriseImage)
         addSubview(sunriseLabel)
         addSubview(sunsetImage)
@@ -179,8 +163,8 @@ class DayCardView: UIView {
         dayCardVstack.addArrangedSubview(currentDateLabel)
         
         //HStack
-        dayCardHstack.addArrangedSubview(sunIndexImage)
-        dayCardHstack.addArrangedSubview(sunIndexLabel)
+        dayCardHstack.addArrangedSubview(chanceOfRainImage)
+        dayCardHstack.addArrangedSubview(chanceOfRainLabel)
         dayCardHstack.addArrangedSubview(windSpeedImage)
         dayCardHstack.addArrangedSubview(windSpeedLabel)
         dayCardHstack.addArrangedSubview(humidityImage)
@@ -188,7 +172,6 @@ class DayCardView: UIView {
     }
     
     private func setupConstrains() {
-        
         ellipseImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().inset(36)
@@ -229,7 +212,7 @@ class DayCardView: UIView {
             make.width.equalTo(dayCardVstack).inset(40)
         }
         
-        sunIndexImage.snp.makeConstraints { make in
+        chanceOfRainImage.snp.makeConstraints { make in
             make.width.height.equalTo(20)
         }
         
@@ -239,12 +222,6 @@ class DayCardView: UIView {
         
         humidityImage.snp.makeConstraints { make in
             make.width.height.equalTo(20)
-        }
-        
-        gradusImage.snp.makeConstraints { make in
-            make.top.equalTo(tempLabel.snp.top).offset(-5)
-            make.height.width.equalTo(5)
-            make.left.equalTo(tempLabel.snp.right).offset(2)
         }
         
     }

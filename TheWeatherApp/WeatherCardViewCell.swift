@@ -11,7 +11,6 @@ class WeatherCardViewCell: UICollectionViewCell {
     lazy var temperatureLabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "10"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
@@ -25,7 +24,6 @@ class WeatherCardViewCell: UICollectionViewCell {
     lazy var hourTimeIntervalLabel = {
         let label = UILabel()
         label.textColor = .black
-        label.text = "10:00"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()

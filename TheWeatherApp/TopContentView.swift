@@ -31,7 +31,7 @@ class TopContentView: UIView {
         view.layer.cornerRadius = 5
         return view
     }()
-
+    
     
     // MARK: - Private Methods
     private func setupSubviews() {
@@ -41,7 +41,7 @@ class TopContentView: UIView {
     private func setupView() {
         backgroundColor = .white
     }
-
+    
     private func setupConstraints() {
         dayCardView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(16)
@@ -53,20 +53,24 @@ class TopContentView: UIView {
 
 extension TopContentView: WeatherObserver {
     func updateUI(with weatherModel: WeatherViewModel) {
-            guard let nowDt = viewModel.convertDate(from: weatherModel.nowDt) else { return }
-            let fact = weatherModel.fact
-            let forecasts = weatherModel.forecasts
-            let tempMin = forecasts.first?.parts.day.tempMin ?? 0
-            let tempMax = forecasts.first?.parts.day.tempMax ?? 0
-            
-            dayCardView.tempLabel.text = "\(fact.temp)"
-            dayCardView.sunriseLabel.text = forecasts.first?.sunrise ?? "N/A"
-            dayCardView.sunsetLabel.text = forecasts.first?.sunset ?? "N/A"
-            dayCardView.humidityLabel.text = "\(fact.humidity)%"
-            dayCardView.currentDateLabel.text = nowDt
-            dayCardView.windSpeedLabel.text = "\(fact.windSpeed)"
-            dayCardView.tempMinMaxLabel.text = "\(tempMin)/\(tempMax)"
-        }
+        guard let nowDt = viewModel.convertDate(from: weatherModel.nowDt) else { return }
+        let fact = weatherModel.fact
+        let forecasts = weatherModel.forecasts
+        let tempMin = forecasts.first?.parts.day.tempMin ?? 0
+        let tempMax = forecasts.first?.parts.day.tempMax ?? 0
+        let chanceOfRain = forecasts.first?.parts.day.precProb ?? 0
+        let condition = viewModel.getWeatherCondition()
+        
+        dayCardView.tempLabel.text = "\(fact.temp)\u{00B0}"
+        dayCardView.sunriseLabel.text = forecasts.first?.sunrise ?? "N/A"
+        dayCardView.sunsetLabel.text = forecasts.first?.sunset ?? "N/A"
+        dayCardView.humidityLabel.text = "\(fact.humidity)%"
+        dayCardView.currentDateLabel.text = nowDt
+        dayCardView.windSpeedLabel.text = "\(fact.windSpeed)"
+        dayCardView.tempMinMaxLabel.text = "\(tempMin)\u{00B0}/\(tempMax)\u{00B0}"
+        dayCardView.condintionLabel.text = condition
+        dayCardView.chanceOfRainLabel.text = "\(chanceOfRain)%"
+    }
     
     func didUpdateWeather(_ weatherModel: WeatherViewModel) {
         DispatchQueue.main.async { [weak self] in

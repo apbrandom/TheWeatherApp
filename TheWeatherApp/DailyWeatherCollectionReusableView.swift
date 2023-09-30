@@ -78,14 +78,11 @@ class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollection
         
         let dailydata = dailyWeatherData[indexPath.row]
         cell.dataLabel.text = convert(dailydata.date)
-        
-        print (dailydata)
-        
-        
-        
+        cell.chanceOfRainLabel.text = "\(dailydata.parts.day.precProb)%"
+        cell.conditionLabel.text = viewModel.getWeatherCondition()
+        cell.temperatureRangeLabel.text = "\(dailydata.parts.day.tempMin)\u{00B0}-\(dailydata.parts.day.tempMax)\u{00B0}"
         return cell
     }
-    
     
     // MARK: - UICollectionViewDelegateFlowLayout
     

@@ -9,10 +9,9 @@ import UIKit
 import SnapKit
 
 class DailyWeatherCollectionViewCell: UICollectionViewCell {
-
     lazy var dataLabel = {
         let label = UILabel()
-        label.text = "21/04"
+        label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 16)
         return label
     }()
@@ -25,18 +24,18 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
     lazy var chanceOfRainLabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
-        label.text = "57%"
+        label.textAlignment = .right
         return label
     }()
     
     lazy var conditionLabel = {
         let label = UILabel()
-        label.backgroundColor = .brown
-        label.text = "Местами дождь"
+        label.textAlignment = .center
+        label.lineBreakMode = .byTruncatingMiddle
         return label
     }()
     
-    lazy var temperatureLabel = {
+    lazy var temperatureRangeLabel = {
         let label = UILabel()
         label.text = "4-11"
         label.font = UIFont.systemFont(ofSize: 18)
@@ -66,23 +65,23 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
         addSubview(chanceOfRainLabel)
         addSubview(chanceOfRainImage)
         addSubview(conditionLabel)
-        addSubview(temperatureLabel)
+        addSubview(temperatureRangeLabel)
     }
     
     private func setupConstraints() {
-        
         dataLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview().inset(7)
+            make.top.leading.equalToSuperview().inset(10)
+            make.trailing.equalTo(conditionLabel.snp.leading).offset(-10)
+        }
+        
+        chanceOfRainLabel.snp.makeConstraints { make in
+            make.top.equalTo(dataLabel.snp.bottom).offset(7)
+            make.trailing.equalTo(conditionLabel.snp.leading).offset(-10)
         }
         
         chanceOfRainImage.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(7)
             make.top.equalTo(dataLabel.snp.bottom).offset(5)
-        }
-        
-        chanceOfRainLabel.snp.makeConstraints { make in
-            make.top.equalTo(dataLabel.snp.bottom).offset(7)
-            make.leading.equalTo(chanceOfRainImage.snp.trailing).offset(2)
         }
         
         conditionLabel.snp.makeConstraints { make in
@@ -91,9 +90,9 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
             make.width.equalToSuperview().inset(70)
         }
         
-        temperatureLabel.snp.makeConstraints { make in
+        temperatureRangeLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(30)
+            make.leading.equalTo(conditionLabel.snp.trailing).offset(5)
         }
     }
     

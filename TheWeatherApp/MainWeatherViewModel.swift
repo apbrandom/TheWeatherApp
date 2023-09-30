@@ -124,6 +124,37 @@ class MainWeatherViewModel {
             }
         }
     
+    func getWeatherCondition() -> String {
+        let condition = weatherCondition
+        
+        switch condition {
+        case .clear:
+            return "Ясно"
+        case .partlyCloudy:
+            return "Малооблачно"
+        case .cloudy:
+            return "Облачно с прояснениям"
+        case .overcast:
+             return "Пасмурно"
+        case .rain:
+            return "Дождь"
+        case .heavyRain:
+            return "Cильный дождь"
+        case .lightRain:
+            return "небольшой дождь"
+        case .snow:
+            return "Снег"
+        case .hail:
+            return "Град"
+        case .thunderstormWithRain:
+            return "Дождь с грозой"
+        case .thunderstormWithHail:
+            return "гроза с градом"
+        default:
+            return "Обычная погода, ничего особенного"
+        }
+    }
+    
     
     enum WeatherError: Error {
         case noCachedData

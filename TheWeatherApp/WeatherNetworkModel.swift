@@ -34,6 +34,7 @@ struct Parts: Decodable {
 struct PartDetails: Decodable {
     let tempMin: Int
     let tempMax: Int
+    let precProb: Int
 }
 
 
