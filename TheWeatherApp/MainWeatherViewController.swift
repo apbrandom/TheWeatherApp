@@ -55,7 +55,7 @@ class MainWeatherViewController: UIViewController {
         super.viewDidLoad()
         
         
-//        isFirstLaunch()
+        handleFirstLaunch()
         setupView()
         setupSubviews()
         setupConstraints()
@@ -158,15 +158,19 @@ extension MainWeatherViewController {
         present(locationPermissionViewController, animated: true, completion: nil)
     }
     
+    
     @objc func rightBarButtonTapped() {
-            LocationService.shared.checkAuthorizationStatus(
-                authorized: {
+        LocationService.shared.checkAuthorizationStatus(
+            authorized: {
+                DispatchQueue.global(qos: .background).async {
                     LocationService.shared.getCurrentLocation()
-                },
-                unauthorized: {
-                    self.showLocationPermissionViewController()
                 }
-            )
-        }
+            },
+            unauthorized: {
+                self.showLocationPermissionViewController()
+            }
+        )
+    }
+
     
 }
