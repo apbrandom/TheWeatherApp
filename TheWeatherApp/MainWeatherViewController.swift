@@ -54,6 +54,8 @@ class MainWeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+//        isFirstLaunch()
         setupView()
         setupSubviews()
         setupConstraints()
@@ -83,13 +85,28 @@ class MainWeatherViewController: UIViewController {
         // Ваш код при нажатии на левую кнопку
     }
     
-    @objc func rightBarButtonTapped() {
-        // Ваш код при нажатии на правую кнопку
-    }
+
     
     //MARK: - Private Methods
     private func setupView() {
         view.backgroundColor = .white
+        
+        let leftBarItem = UIBarButtonItem(
+            image: UIImage(resource: .menu),
+            style: .plain,
+            target: self,
+            action: #selector(leftBarButtonTapped))
+        leftBarItem.tintColor = .black
+        
+        let rightBarItem = UIBarButtonItem(
+            image: UIImage(resource: .location),
+            style: .plain,
+            target: self,
+            action: #selector(rightBarButtonTapped))
+        rightBarItem.tintColor = .black
+        
+        navigationItem.leftBarButtonItem = leftBarItem
+        navigationItem.rightBarButtonItem = rightBarItem
     }
     
     private func adjustSubviews() {
@@ -125,3 +142,31 @@ class MainWeatherViewController: UIViewController {
     }
 }
 
+//MARK: - LocationService
+extension MainWeatherViewController {
+    
+    func handleFirstLaunch() {
+           let isFirstLaunch = UserDefaults.standard.bool(forKey: "isFirstLaunch")
+           if !isFirstLaunch {
+               UserDefaults.standard.setValue(true, forKey: "isFirstLaunch")
+               showLocationPermissionViewController()
+           }
+       }
+    
+    func showLocationPermissionViewController() {
+        let locationPermissionViewController = LocationPermissionViewController()
+        present(locationPermissionViewController, animated: true, completion: nil)
+    }
+    
+    @objc func rightBarButtonTapped() {
+            LocationService.shared.checkAuthorizationStatus(
+                authorized: {
+                    LocationService.shared.getCurrentLocation()
+                },
+                unauthorized: {
+                    self.showLocationPermissionViewController()
+                }
+            )
+        }
+    
+}

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB013EC62AC84C2F00C22EE5 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB013EC52AC84C2F00C22EE5 /* LocationService.swift */; };
+		CB013EC92AC84D5D00C22EE5 /* LocationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB013EC82AC84D5D00C22EE5 /* LocationPermissionViewController.swift */; };
 		CB0AD2402AAF408600E96A60 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0AD23F2AAF408600E96A60 /* AppDelegate.swift */; };
 		CB0AD2422AAF408600E96A60 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0AD2412AAF408600E96A60 /* SceneDelegate.swift */; };
 		CB0AD2442AAF408600E96A60 /* MainWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0AD2432AAF408600E96A60 /* MainWeatherViewController.swift */; };
@@ -37,6 +39,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CB013EC52AC84C2F00C22EE5 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		CB013EC82AC84D5D00C22EE5 /* LocationPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionViewController.swift; sourceTree = "<group>"; };
 		CB0AD23C2AAF408600E96A60 /* TheWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0AD23F2AAF408600E96A60 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB0AD2412AAF408600E96A60 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +83,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB013EC72AC84C3400C22EE5 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				CB013EC52AC84C2F00C22EE5 /* LocationService.swift */,
+			);
+			name = Location;
+			sourceTree = "<group>";
+		};
 		CB0AD2332AAF408600E96A60 = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				CBFACD7A2AB34B2400DD033F /* DetailWeatherViewController.swift */,
+				CB013EC82AC84D5D00C22EE5 /* LocationPermissionViewController.swift */,
 			);
 			name = DetailWeatherScreen;
 			sourceTree = "<group>";
@@ -186,6 +199,7 @@
 				CB42B8F82ABDEC1A00434BB7 /* Converter */,
 				CBA1E85E2ABC63C600BDA620 /* Realm */,
 				CBFACD812AB4B92900DD033F /* Networking */,
+				CB013EC72AC84C3400C22EE5 /* Location */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -303,7 +317,9 @@
 			files = (
 				CBA1E8622ABC6EAA00BDA620 /* RealmService.swift in Sources */,
 				CB14E1222AC36F14008ABE91 /* WeatherCardViewCell.swift in Sources */,
+				CB013EC92AC84D5D00C22EE5 /* LocationPermissionViewController.swift in Sources */,
 				CB699FFD2AB1ADA70072A864 /* MidContentView.swift in Sources */,
+				CB013EC62AC84C2F00C22EE5 /* LocationService.swift in Sources */,
 				CBFACD752AB208A600DD033F /* MainWeatherViewModel.swift in Sources */,
 				CBFACD732AB205A000DD033F /* Coordinator.swift in Sources */,
 				CBFACD772AB20D6200DD033F /* WeatherNetworkModel.swift in Sources */,
@@ -381,7 +397,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -438,7 +454,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -458,9 +474,10 @@
 				DEVELOPMENT_TEAM = 5JY83H55A5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TheWeatherApp/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to deliver always up to date forecast";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -485,9 +502,10 @@
 				DEVELOPMENT_TEAM = 5JY83H55A5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TheWeatherApp/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to deliver always up to date forecast";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
