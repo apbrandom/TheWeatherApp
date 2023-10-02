@@ -55,7 +55,6 @@ class MainWeatherViewController: UIViewController {
         super.viewDidLoad()
         
         
-        handleFirstLaunch()
         setupView()
         setupSubviews()
         setupConstraints()
@@ -65,12 +64,18 @@ class MainWeatherViewController: UIViewController {
         viewModel.addObserver(bottomView)
         
         Task {
-            do {
-                _ = try await viewModel.fetchWeather()
-            } catch {
-                print("Error: \(error)")
+                // Первая асинхронная операция
+                do {
+                    _ = try await viewModel.fetchWeather(lat: "55.7558", lon: "37.6173")
+                } catch {
+                    print("Error: \(error)")
+                }
+                
+                // Вторая асинхронная операция
+                if await LocationService.shared.checkIfLocationServiceIsEnabled() {
+                    // Do something
+                }
             }
-        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,11 +90,15 @@ class MainWeatherViewController: UIViewController {
         // Ваш код при нажатии на левую кнопку
     }
     
+    @objc func rightBarButtonTapped() {
 
+    }
+    
     
     //MARK: - Private Methods
     private func setupView() {
         view.backgroundColor = .white
+        navigationItem.title = "text"
         
         let leftBarItem = UIBarButtonItem(
             image: UIImage(resource: .menu),
@@ -140,37 +149,4 @@ class MainWeatherViewController: UIViewController {
             make.width.equalTo(mainScrollView)
         }
     }
-}
-
-//MARK: - LocationService
-extension MainWeatherViewController {
-    
-    func handleFirstLaunch() {
-           let isFirstLaunch = UserDefaults.standard.bool(forKey: "isFirstLaunch")
-           if !isFirstLaunch {
-               UserDefaults.standard.setValue(true, forKey: "isFirstLaunch")
-               showLocationPermissionViewController()
-           }
-       }
-    
-    func showLocationPermissionViewController() {
-        let locationPermissionViewController = LocationPermissionViewController()
-        present(locationPermissionViewController, animated: true, completion: nil)
-    }
-    
-    
-    @objc func rightBarButtonTapped() {
-        LocationService.shared.checkAuthorizationStatus(
-            authorized: {
-                DispatchQueue.global(qos: .background).async {
-                    LocationService.shared.getCurrentLocation()
-                }
-            },
-            unauthorized: {
-                self.showLocationPermissionViewController()
-            }
-        )
-    }
-
-    
 }

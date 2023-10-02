@@ -48,9 +48,9 @@ class MainWeatherViewModel {
         }
     }
     
-    func fetchWeather() async throws -> WeatherViewModel? {
+    func fetchWeather(lat: String, lon: String) async throws -> WeatherViewModel? {
         do {
-            let networkModel = try await networkService.fetchNetworkModel()
+            let networkModel = try await networkService.fetchNetworkModel(lat: lat, lon: lon)
             let realmModel = modelConverter.toRealmModel(from: networkModel)
             try await realmService.saveOrUpdateWeather(realmModel)
             guard let viewModel = modelConverter.toViewModel(from: realmModel) else { return nil }

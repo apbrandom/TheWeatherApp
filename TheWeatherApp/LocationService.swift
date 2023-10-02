@@ -11,79 +11,41 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     
     static let shared = LocationService()  // Синглтон для доступа к экземпляру этого сервиса из любой части приложения
     
-    private var locationManager: CLLocationManager  // Менеджер геолокации для работы с сервисами геолокации
-    var authorizationStatus: ((CLAuthorizationStatus) -> Void)?  // Кложура для получения статуса авторизации
+    private var locationManager: CLLocationManager?
     
-    private override init() {
-        self.locationManager = CLLocationManager()
-        super.init()
-        self.locationManager.delegate = self  // Установка делегата
-    }
-    
-    // Запрос разрешения на использование геолокации
-    func requestPermission() {
-        DispatchQueue.main.async {
-            self.locationManager.requestWhenInUseAuthorization()
+    func checkIfLocationServiceIsEnabled() async -> Bool {
+        if CLLocationManager.locationServicesEnabled() {
+            self.locationManager = CLLocationManager()
+            self.locationManager?.delegate = self
+            return true
+        } else {
+            print("Location Manager is not enabled")
+            return false
         }
     }
     
-    // Проверка статуса авторизации для геолокации
-    func checkAuthorizationStatus(
-        authorized: @escaping () -> Void,
-        unauthorized: @escaping () -> Void
-    ) {
-        let status = locationManager.authorizationStatus
+    func checkLocationAutorization() {
+        guard let locationManager = locationManager else { return }
         
-        switch status {
-        case .authorizedWhenInUse, .authorizedAlways:
-            authorized()
-        case .denied, .restricted, .notDetermined:
-            unauthorized()
-        @unknown default:
-            unauthorized()
-        }
-    }
-    
-    // MARK: - CLLocationManagerDelegate
-    
-    // Метод делегата, вызывается при изменении статуса авторизации
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        let status = manager.authorizationStatus
-        authorizationStatus?(status)
-        
-        guard status == .authorizedWhenInUse || status == .authorizedAlways else {
-            // TODO: Handle unauthorized status, perhaps inform the user
-            return
-        }
-        
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.getCurrentLocation()
-        }
-    }
-    
-    // Метод делегата, вызывается при обновлении геолокации
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        
-        print("Текущая геолокация: \(location)")
-        
-        // Останавливаем обновление геолокации, если оно больше не нужно
-        locationManager.stopUpdatingLocation()
-    }
-    
-    // Получение текущей геолокации пользователя
-    func getCurrentLocation() {
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard CLLocationManager.locationServicesEnabled() else {
-                // TODO: Inform the user that location services are not enabled.
-                return
-            }
+        switch locationManager.authorizationStatus {
             
-            self?.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            self?.locationManager.startUpdatingLocation()
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .restricted:
+            print("Your location is restricted likely due to parental controls.")
+        case .denied:
+            print("You have denied this app location permission. Go into settings to change it.")
+        case .authorizedAlways:
+            break
+        case .authorizedWhenInUse:
+            break
+        @unknown default:
+            break
         }
     }
-
     
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        checkLocationAutorization()
+    }
     
 }

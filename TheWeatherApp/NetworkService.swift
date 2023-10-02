@@ -4,7 +4,7 @@
 //
 //  Created by Vadim Vinogradov on 14.09.2023.
 //
-
+let coordinate = "lat=55.7558&lon=37.6176"
 let apiKey = "5ce5fb1b-d47e-432e-8825-b5a2577f089b"
 
 import Foundation
@@ -14,11 +14,10 @@ enum NetworkError: Error {
 }
 
 final class NetworkService {
-    
-    internal func createURL() -> URL? {
+    internal func createURL(lat: String, lon: String) -> URL? {
         let baseURL = "https://api.weather.yandex.ru/v2/forecast?"
-        let latitude = "55.7558"
-        let longitude = "37.6176"
+        let latitude = lat
+        let longitude = lon
         let language = "ru_RU"
         let limit = "7"
         let hours = "true"
@@ -28,11 +27,11 @@ final class NetworkService {
         return url
     }
     
-    func fetchNetworkModel() async throws -> WeatherNetworkModel {
-        guard let url = createURL() else {
+    func fetchNetworkModel(lat: String, lon: String) async throws -> WeatherNetworkModel {
+        guard let url = createURL(lat: lat, lon: lon) else {
             throw NetworkError.badURL
         }
-        
+        print("----------\(url)")
         var request = URLRequest(url: url)
         request.setValue(apiKey, forHTTPHeaderField: "X-Yandex-API-Key")
         

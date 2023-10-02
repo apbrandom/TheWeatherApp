@@ -45,23 +45,7 @@ class LocationPermissionViewController: UIViewController {
     
     //MARK: - Actions
     @objc private func acceptButtonTapped() {
-            print("Accept button tapped")
-            LocationService.shared.requestPermission()
-            
-            LocationService.shared.authorizationStatus = { [weak self] status in
-                switch status {
-                case .authorizedWhenInUse, .authorizedAlways:
-                    print("Геолокация разрешена")
-                    self?.dismiss(animated: true, completion: nil)
-                        
-                case .denied, .restricted:
-                    print("Геолокация не разрешена")
-                    self?.showSettingsAlert()
-                        
-                default:
-                    break
-                }
-            }
+
         self.dismiss(animated: true, completion: nil)
         }
     
@@ -82,20 +66,7 @@ class LocationPermissionViewController: UIViewController {
     }
     
     private func locationStatus() {
-        LocationService.shared.authorizationStatus = { [weak self] status in
-            switch status {
-            case .authorizedWhenInUse, .authorizedAlways:
-                print("Геолокация разрешена")
-                // Здесь ваш код для обработки согласия на геолокацию
-                
-            case .denied, .restricted:
-                print("Геолокация не разрешена")
-                self?.showSettingsAlert()
-                
-            default:
-                break
-            }
-        }
+
     }
     
     private func showSettingsAlert() {
