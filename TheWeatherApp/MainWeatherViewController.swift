@@ -63,18 +63,18 @@ class MainWeatherViewController: UIViewController {
         viewModel.addObserver(midView)
         viewModel.addObserver(bottomView)
         
+        LocationService.shared.checkLocationService()
         Task {
                 // Первая асинхронная операция
                 do {
-                    _ = try await viewModel.fetchWeather(lat: "55.7558", lon: "37.6173")
+                    _ = try await viewModel.fetchWeather(latitude: viewModel.latitude, longitude: viewModel.longitude)
                 } catch {
                     print("Error: \(error)")
                 }
                 
                 // Вторая асинхронная операция
-                if await LocationService.shared.checkIfLocationServiceIsEnabled() {
-                    // Do something
-                }
+            
+            
             }
     }
     
@@ -91,9 +91,25 @@ class MainWeatherViewController: UIViewController {
     }
     
     @objc func rightBarButtonTapped() {
+        LocationService.shared.didUpdateLocation = { [weak self] coordinate in
+            self?.viewModel.latitude = coordinate.latitude
+            self?.viewModel.longitude = coordinate.longitude
+        }
 
+        Task {
+            do {
+                _ = try await viewModel.fetchWeather(latitude: viewModel.latitude, longitude: viewModel.longitude)
+                
+                if let locationName = await viewModel.fetchLocationName() {
+                    DispatchQueue.main.async {
+                        self.navigationItem.title = locationName
+                    }
+                }
+            } catch {
+                print("Error: \(error)")
+            }
+        }
     }
-    
     
     //MARK: - Private Methods
     private func setupView() {

@@ -474,6 +474,7 @@
 				DEVELOPMENT_TEAM = 5JY83H55A5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TheWeatherApp/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need you location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to deliver always up to date forecast";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -502,6 +503,7 @@
 				DEVELOPMENT_TEAM = 5JY83H55A5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TheWeatherApp/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need you location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to deliver always up to date forecast";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 protocol WeatherObserver {
     func didUpdateWeather(_ weather: WeatherViewModel)
@@ -18,24 +19,19 @@ class MainWeatherViewModel {
     private let realmService: RealmService
     private let modelConverter: ModelConverter
     
-    internal var fixedHeightSubviews: CGFloat = 0.0
-    internal let numberOfSubviews: CGFloat = 3.0
     private var observers: [WeatherObserver] = []
     var weatherCondition: WeatherCondition?
     var weatherForecasts: [ForecastsViewModel?] = []
+    
+    var latitude: CLLocationDegrees = 55.7558
+    var longitude: CLLocationDegrees = 37.6173
+    internal var fixedHeightSubviews: CGFloat = 0.0
+    internal let numberOfSubviews: CGFloat = 3.0
     
     init(networkService: NetworkService, realmService: RealmService, modelConverter: ModelConverter) {
         self.networkService = networkService
         self.realmService = realmService
         self.modelConverter = modelConverter
-    }
-    
-    func getFixedHeightSubviews() -> CGFloat {
-        return fixedHeightSubviews
-    }
-    
-    func getNumberOfSubviews() -> CGFloat {
-        return numberOfSubviews
     }
     
     func addObserver(_ observer: WeatherObserver) {
@@ -48,9 +44,39 @@ class MainWeatherViewModel {
         }
     }
     
-    func fetchWeather(lat: String, lon: String) async throws -> WeatherViewModel? {
+    func fetchLocationName() async -> String? {
+        let geocoder = CLGeocoder()
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        var locationName: String?
+
+        let _ = await withCheckedContinuation { (continuation: CheckedContinuation<String?, Never>) in
+            geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+                if let error = error {
+                    print("Geocoding error: \(error)")
+                    continuation.resume(returning: nil)
+                    return
+                }
+                
+                if let placemark = placemarks?.first,
+                   let city = placemark.locality,
+                   let country = placemark.country {
+                    locationName = "\(country), \(city)"
+                    continuation.resume(returning: locationName)
+                } else {
+                    continuation.resume(returning: nil)
+                }
+            }
+        }
+        return locationName
+    }
+
+
+    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> WeatherViewModel? {
+        
+        let lat = String(latitude)
+        let lon = String(longitude)
         do {
-            let networkModel = try await networkService.fetchNetworkModel(lat: lat, lon: lon)
+            let networkModel = try await networkService.fetchNetworkModel(lat: lat , lon: lon)
             let realmModel = modelConverter.toRealmModel(from: networkModel)
             try await realmService.saveOrUpdateWeather(realmModel)
             guard let viewModel = modelConverter.toViewModel(from: realmModel) else { return nil }
@@ -58,6 +84,7 @@ class MainWeatherViewModel {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 weatherForecasts = viewModel.forecasts
+                
                 self.notifyObservers(viewModel)
                 
             }
@@ -94,6 +121,15 @@ class MainWeatherViewModel {
         
         let resultDate = formartter.string(from: date)
         return resultDate
+    }
+    
+    
+    func getFixedHeightSubviews() -> CGFloat {
+        return fixedHeightSubviews
+    }
+    
+    func getNumberOfSubviews() -> CGFloat {
+        return numberOfSubviews
     }
     
     func setWeatherCondition(from string: String) {
@@ -154,7 +190,6 @@ class MainWeatherViewModel {
             return "Обычная погода, ничего особенного"
         }
     }
-    
     
     enum WeatherError: Error {
         case noCachedData
