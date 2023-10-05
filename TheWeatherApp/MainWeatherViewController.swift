@@ -54,28 +54,18 @@ class MainWeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         setupView()
         setupSubviews()
         setupConstraints()
         
-        viewModel.addObserver(topView)
-        viewModel.addObserver(midView)
-        viewModel.addObserver(bottomView)
+        viewModel.addTitleObserver(self)
+        viewModel.addWeatherObserver(topView)
+        viewModel.addWeatherObserver(midView)
+        viewModel.addWeatherObserver(bottomView)
         
         LocationService.shared.checkLocationService()
-        Task {
-                // Первая асинхронная операция
-                do {
-                    _ = try await viewModel.fetchWeather(latitude: viewModel.latitude, longitude: viewModel.longitude)
-                } catch {
-                    print("Error: \(error)")
-                }
-                
-                // Вторая асинхронная операция
-            
-            
-            }
+        requestPermission()
+        fetchWeather()
     }
     
     override func viewDidLayoutSubviews() {
@@ -91,30 +81,41 @@ class MainWeatherViewController: UIViewController {
     }
     
     @objc func rightBarButtonTapped() {
-        LocationService.shared.didUpdateLocation = { [weak self] coordinate in
-            self?.viewModel.latitude = coordinate.latitude
-            self?.viewModel.longitude = coordinate.longitude
-        }
-
-        Task {
-            do {
-                _ = try await viewModel.fetchWeather(latitude: viewModel.latitude, longitude: viewModel.longitude)
-                
-                if let locationName = await viewModel.fetchLocationName() {
-                    DispatchQueue.main.async {
-                        self.navigationItem.title = locationName
-                    }
-                }
-            } catch {
-                print("Error: \(error)")
+        let authStatus = LocationService.shared.locationManager?.authorizationStatus
+        if authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse {
+            LocationService.shared.didUpdateLocation = { [weak self] coordinate in
+                self?.viewModel.latitude = coordinate.latitude
+                self?.viewModel.longitude = coordinate.longitude
             }
-        }
+            
+            Task {
+                do {
+                    _ = try await viewModel.fetchWeather(latitude: viewModel.latitude, longitude: viewModel.longitude)
+                    
+                    if let locationName = await viewModel.fetchLocationName() {
+                        DispatchQueue.main.async {
+                            self.navigationItem.title = locationName
+                        }
+                    }
+                } catch {
+                    print("Error: \(error)")
+                }
+            }
+        } else {
+            showQAlert(
+                title: "Разрешение на геолокацию",
+                message: "Для доступа к этой функции необходимо разрешение на использование геолокации. Перейдите в настройки, чтобы изменить разрешения.",
+                action: {
+                    if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
+                    }
+                })        }
     }
     
     //MARK: - Private Methods
     private func setupView() {
         view.backgroundColor = .white
-        navigationItem.title = "text"
+        navigationItem.title = "City, Country"
         
         let leftBarItem = UIBarButtonItem(
             image: UIImage(resource: .menu),
@@ -163,6 +164,34 @@ class MainWeatherViewController: UIViewController {
         mainStackView.snp.makeConstraints { make in
             make.edges.equalTo(mainScrollView)
             make.width.equalTo(mainScrollView)
+        }
+    }
+    
+    func fetchWeather() {
+        Task {
+            do {
+                _ = try await viewModel.fetchWeather(latitude: viewModel.latitude, longitude: viewModel.longitude)
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    func         requestPermission() {
+        LocationService.shared.requestPermission = { [weak self] in
+            DispatchQueue.main.async {
+                let permissionVC = LocationPermissionViewController()
+                self?.present(permissionVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+}
+
+extension MainWeatherViewController: TitleObservable {
+    func didUpdateLocationName(_ locationName: String) {
+        DispatchQueue.main.async {
+            self.navigationItem.title = locationName
         }
     }
 }

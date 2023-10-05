@@ -11,7 +11,9 @@ class LocationService: NSObject {
     
     static let shared = LocationService()
     
-    private var locationManager: CLLocationManager?
+    var requestPermission: (() -> Void)?
+    
+    var locationManager: CLLocationManager?
     var didUpdateLocation: ((CLLocationCoordinate2D) -> Void)?
     
     func checkLocationService() {
@@ -31,7 +33,9 @@ class LocationService: NSObject {
         switch locationManager.authorizationStatus {
             
         case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
+            
+            requestPermission?()
+
         case .restricted:
             print("Your location is restricted likely due to parental controls.")
         case .denied:
@@ -85,4 +89,20 @@ extension LocationService: CLLocationManagerDelegate {
                 print("Unknown error occurred while handling location manager error: \(error.localizedDescription)")
             }
         }
+}
+
+extension LocationService {
+    func getCurrentLocation() async -> CLLocationCoordinate2D? {
+        return await withCheckedContinuation { continuation in
+            self.didUpdateLocation = { location in
+                continuation.resume(returning: location)
+            }
+            
+            self.requestPermission = {
+                continuation.resume(returning: nil)
+            }
+            
+            self.requestOnTimeLocation()
+        }
+    }
 }

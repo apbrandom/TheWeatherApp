@@ -13,13 +13,18 @@ protocol WeatherObserver {
     func didUpdateWeather(_ weather: WeatherViewModel)
 }
 
+protocol TitleObservable {
+    func didUpdateLocationName(_ locationName: String)
+}
+
 class MainWeatherViewModel {
     
     private let networkService: NetworkService
     private let realmService: RealmService
     private let modelConverter: ModelConverter
     
-    private var observers: [WeatherObserver] = []
+    private var weatherObservers: [WeatherObserver] = []
+    private var titleObservers: [TitleObservable] = []
     var weatherCondition: WeatherCondition?
     var weatherForecasts: [ForecastsViewModel?] = []
     
@@ -34,15 +39,7 @@ class MainWeatherViewModel {
         self.modelConverter = modelConverter
     }
     
-    func addObserver(_ observer: WeatherObserver) {
-        observers.append(observer)
-    }
-    
-    private func notifyObservers(_ weather: WeatherViewModel) {
-        for observer in observers {
-            observer.didUpdateWeather(weather)
-        }
-    }
+
     
     func fetchLocationName() async -> String? {
         let geocoder = CLGeocoder()
@@ -85,7 +82,7 @@ class MainWeatherViewModel {
                 guard let self = self else { return }
                 weatherForecasts = viewModel.forecasts
                 
-                self.notifyObservers(viewModel)
+                self.notifyWeatherObservers(viewModel)
                 
             }
             
@@ -122,6 +119,36 @@ class MainWeatherViewModel {
         let resultDate = formartter.string(from: date)
         return resultDate
     }
+    
+    func fetchDataAndUpdateUI() async {
+        // Получение координат
+        if let coordinate = await LocationService.shared.getCurrentLocation() {
+            self.latitude = coordinate.latitude
+            self.longitude = coordinate.longitude
+        }
+        
+        // Получение данных о погоде
+        do {
+            if let weatherViewModel = try await fetchWeather(latitude: latitude, longitude: longitude) {
+                // Обновление UI
+                DispatchQueue.main.async { [weak self] in
+                    self?.notifyWeatherObservers(weatherViewModel)
+                }
+            }
+        } catch {
+            print("Ошибка при получении данных о погоде: \(error)")
+        }
+        
+        // Получение имени местоположения
+        if let locationName = await fetchLocationName() {
+            DispatchQueue.main.async { [weak self] in
+                self?.notifyTitleObservers(locationName)
+            }
+        }
+        }
+    
+    
+
     
     
     func getFixedHeightSubviews() -> CGFloat {
@@ -217,3 +244,36 @@ enum WeatherCondition: String {
 }
 
 
+extension MainWeatherViewModel {
+    //MARK: - Observer Methods
+    
+//    func addWeatherObserver(_ observer: WeatherObserver) {
+//        weatherObservers.append(observer)
+//    }
+    
+    func addTitleObserver(_ observer: TitleObservable) {
+        titleObservers.append(observer)
+    }
+    
+
+    
+    private func notifyTitleObservers(_ locationName: String) {
+        for observer in titleObservers {
+            observer.didUpdateLocationName(locationName)
+        }
+    }
+    
+    
+    
+    
+    
+    func addWeatherObserver(_ observer: WeatherObserver) {
+        weatherObservers.append(observer)
+    }
+    
+    private func notifyWeatherObservers(_ weather: WeatherViewModel) {
+        for observer in weatherObservers {
+            observer.didUpdateWeather(weather)
+        }
+    }
+}

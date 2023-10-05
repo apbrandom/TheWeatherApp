@@ -45,9 +45,23 @@ class LocationPermissionViewController: UIViewController {
     
     //MARK: - Actions
     @objc private func acceptButtonTapped() {
-
-        self.dismiss(animated: true, completion: nil)
+        let status = LocationService.shared.locationManager?.authorizationStatus ?? .notDetermined
+        
+        switch status {
+        case .notDetermined:
+            if let locationManager = LocationService.shared.locationManager {
+                locationManager.requestWhenInUseAuthorization()
+            }
+        case .restricted, .denied: 
+            break
+        case .authorizedAlways, .authorizedWhenInUse:
+            self.dismiss(animated: true, completion: nil)
+        @unknown default:
+            break
+            
         }
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @objc private func denyButtonTapped() {
         print("Deny button tapped")
@@ -66,7 +80,7 @@ class LocationPermissionViewController: UIViewController {
     }
     
     private func locationStatus() {
-
+        
     }
     
     private func showSettingsAlert() {
