@@ -31,7 +31,8 @@ class MainCoordinator: Coordinator {
 
     func start() {
         let viewModel = MainWeatherViewModel(networkService: networkService, realmService: realmService, modelConverter: modelConverter)
-        let viewController = MainWeatherViewController(viewModel: viewModel)
+        let detailViewModel = DetailWeatherViewModel()
+        let viewController = MainWeatherViewController(viewModel: viewModel, viewModelDetail: detailViewModel)
         viewController.coordinator = self
         navigationController.pushViewController(viewController, animated: true)
     }

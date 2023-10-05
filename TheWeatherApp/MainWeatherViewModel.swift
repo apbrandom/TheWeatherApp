@@ -68,7 +68,7 @@ class MainWeatherViewModel {
     }
 
 
-    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> WeatherViewModel? {
+    func fetchWeather() async throws -> WeatherViewModel? {
         
         let lat = String(latitude)
         let lon = String(longitude)
@@ -129,7 +129,7 @@ class MainWeatherViewModel {
         
         // Получение данных о погоде
         do {
-            if let weatherViewModel = try await fetchWeather(latitude: latitude, longitude: longitude) {
+            if let weatherViewModel = try await fetchWeather() {
                 // Обновление UI
                 DispatchQueue.main.async { [weak self] in
                     self?.notifyWeatherObservers(weatherViewModel)

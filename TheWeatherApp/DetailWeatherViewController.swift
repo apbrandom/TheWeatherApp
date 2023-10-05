@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import SnapKit
 
 class DetailWeatherViewController: UIViewController {
     
+    //MARK: - initialization
     var viewModel: DetailWeatherViewModel
     
     init(viewModel: DetailWeatherViewModel) {
@@ -20,21 +22,37 @@ class DetailWeatherViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Subviews
+    
+    let tempratureGraphView = {
+        let view = temperatureGraphView()
+        return view
+    }()
+    
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        setupView()
+        setupSubviews()
+        setupConstraints()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    //MARK: - Layout
+    
+    func setupView() {
+        view.backgroundColor = .systemGray3
     }
-    */
-
+    
+    func setupSubviews() {
+        
+    }
+    
+    func setupConstraints() {
+        tempratureGraphView.snp.makeConstraints { make in
+            make.height.equalTo(100)
+            make.width.equalToSuperview()
+            make.top.equalToSuperview().inset(100)
+        }
+    }
 }

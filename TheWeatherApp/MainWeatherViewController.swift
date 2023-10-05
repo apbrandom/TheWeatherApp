@@ -12,9 +12,11 @@ class MainWeatherViewController: UIViewController {
     
     var coordinator: MainCoordinator?
     var viewModel: MainWeatherViewModel
+    var viewModelDetail: DetailWeatherViewModel
     
-    init(viewModel: MainWeatherViewModel) {
+    init(viewModel: MainWeatherViewModel, viewModelDetail: DetailWeatherViewModel) {
         self.viewModel = viewModel
+        self.viewModelDetail = viewModelDetail
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -57,6 +59,7 @@ class MainWeatherViewController: UIViewController {
         setupView()
         setupSubviews()
         setupConstraints()
+        setupClosures()
         
         viewModel.addTitleObserver(self)
         viewModel.addWeatherObserver(topView)
@@ -90,7 +93,7 @@ class MainWeatherViewController: UIViewController {
             
             Task {
                 do {
-                    _ = try await viewModel.fetchWeather(latitude: viewModel.latitude, longitude: viewModel.longitude)
+                    _ = try await viewModel.fetchWeather()
                     
                     if let locationName = await viewModel.fetchLocationName() {
                         DispatchQueue.main.async {
@@ -167,17 +170,25 @@ class MainWeatherViewController: UIViewController {
         }
     }
     
+    private func setupClosures() {
+        midView.buttonTappedClosure = { [weak self] in
+            guard let self = self else { return }
+            let detailViewController = DetailWeatherViewController(viewModel: viewModelDetail)
+            self.navigationController?.pushViewController(detailViewController, animated: true)
+        }
+    }
+    
     func fetchWeather() {
         Task {
             do {
-                _ = try await viewModel.fetchWeather(latitude: viewModel.latitude, longitude: viewModel.longitude)
+                _ = try await viewModel.fetchWeather()
             } catch {
                 print("Error: \(error)")
             }
         }
     }
     
-    func         requestPermission() {
+    func requestPermission() {
         LocationService.shared.requestPermission = { [weak self] in
             DispatchQueue.main.async {
                 let permissionVC = LocationPermissionViewController()

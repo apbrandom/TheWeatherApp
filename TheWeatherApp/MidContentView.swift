@@ -10,6 +10,9 @@ import SnapKit
 
 class MidContentView: UIView {
     
+    var buttonTappedClosure: (() -> Void)?
+
+    //MARK: - initialization
     var viewModel: MainWeatherViewModel
     
     init(viewModel: MainWeatherViewModel) {
@@ -59,7 +62,15 @@ class MidContentView: UIView {
         return label
     }()
     
+    //MARK: - Action
+    
+    func twentyFourHoursButtonTapped()  {
+        buttonTappedClosure?()
+    }
+    
     // MARK: - Private Methods
+    
+    
     private func setupSubviews() {
         addSubview(dailyWeatherLabel)
         addSubview(hourlyWeatherCardCollectionView)

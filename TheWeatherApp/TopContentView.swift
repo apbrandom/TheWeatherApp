@@ -15,6 +15,7 @@ class TopContentView: UIView {
     init(viewModel: MainWeatherViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
+        
         setupView()
         setupSubviews()
         setupConstraints()
