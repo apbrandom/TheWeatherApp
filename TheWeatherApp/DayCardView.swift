@@ -223,7 +223,5 @@ class DayCardView: UIView {
         humidityImage.snp.makeConstraints { make in
             make.width.height.equalTo(20)
         }
-        
     }
-    
 }

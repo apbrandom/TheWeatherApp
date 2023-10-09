@@ -81,7 +81,6 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
         return cell
     }
     
-
     // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = bounds.size.width / 8.5 // чтобы влезло 6 карточек горизонтально

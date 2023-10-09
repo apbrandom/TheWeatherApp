@@ -32,7 +32,6 @@ class DetailWeatherViewController: UITableViewController {
         
         viewModel.addWeatherObserver(self)
         
-        
         Task {
             await viewModel.fetchDataAndUpdateUI()
         }
@@ -80,23 +79,11 @@ class DetailWeatherViewController: UITableViewController {
      //MARK: - Observer
 extension DetailWeatherViewController: WeatherObserver {
     func didUpdateWeather(_ weather: WeatherModel) {
-//        self.updateUI(with: weather)
+
     }
     
     func updateUI(with weather: WeatherModel) {
-//        guard let hourModel = viewModel.weatherForecasts.first??.hours else { return }
-//        var temeratures: [Int] = []
-//        
-//        for index in stride(from: 0, through: hourModel.count, by: 3) {
-//            if index < hourModel.count {
-//                let temp = hourModel[index].temp
-//                temeratures.append(temp)
-//                print("- - - -\(temeratures)")
-//            }
-//        }
         
-        //        tempratureGraphView.temperatures = temeratures
-        //        tempratureGraphView.setNeedsDisplay()
     }
 }
 

@@ -153,8 +153,8 @@
 			children = (
 				CBFACD7A2AB34B2400DD033F /* DetailWeatherViewController.swift */,
 				CBB2FC3B2AD1BCA7004F3653 /* HourlyWeatherHeaderView.swift */,
-				CBB2FC392AD1BB5E004F3653 /* HourlyTableViewCell.swift */,
 				CB538D502ACEDFDB0050F7CE /* temperatureGraphView.swift */,
+				CBB2FC392AD1BB5E004F3653 /* HourlyTableViewCell.swift */,
 				CB013EC82AC84D5D00C22EE5 /* LocationPermissionViewController.swift */,
 				CBB2FC372AD1B5A0004F3653 /* DetailWeatherTableViewController.swift */,
 			);

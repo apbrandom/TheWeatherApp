@@ -28,6 +28,7 @@ class WeatherViewModel {
     private var titleObservers: [TitleObservable] = []
     var weatherCondition: WeatherCondition?
     var weatherForecasts: [ForecastsModel?] = []
+    var conditionImages: [UIImage] = []
     
     var latitude: CLLocationDegrees = 55.7558
     var longitude: CLLocationDegrees = 37.6173
@@ -44,7 +45,7 @@ class WeatherViewModel {
         let geocoder = CLGeocoder()
         let location = CLLocation(latitude: latitude, longitude: longitude)
         var locationName: String?
-
+        
         let _ = await withCheckedContinuation { (continuation: CheckedContinuation<String?, Never>) in
             geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
                 if let error = error {
@@ -65,8 +66,8 @@ class WeatherViewModel {
         }
         return locationName
     }
-
-
+    
+    
     func fetchWeather() async throws -> WeatherModel? {
         
         let lat = String(latitude)
@@ -79,7 +80,18 @@ class WeatherViewModel {
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                weatherForecasts = viewModel.forecasts
+                self.weatherForecasts = viewModel.forecasts
+                
+                self.conditionImages.removeAll()
+                
+                guard let hours = self.weatherForecasts.first??.hours else { return }
+                for hour in hours {
+                    let condition = hour.condition
+                    self.setWeatherCondition(from: condition)
+                    if let image = self.getWeatherImage() {
+                        self.conditionImages.append(image)
+                    }
+                }
                 
                 self.notifyWeatherObservers(viewModel)
             }
@@ -143,11 +155,7 @@ class WeatherViewModel {
                 self?.notifyTitleObservers(locationName)
             }
         }
-        }
-    
-    
-
-    
+    }
     
     func getFixedHeightSubviews() -> CGFloat {
         return fixedHeightSubviews
@@ -162,28 +170,27 @@ class WeatherViewModel {
     }
     
     func getWeatherImage() -> UIImage? {
-            guard let condition = weatherCondition else { return nil }
-            
-            switch condition {
-            case .clear:
-                return UIImage(resource: .sun)
-            case .partlyCloudy:
-                return UIImage(resource: .sunIndex)
-            case .cloudy:
-                return UIImage(resource: .cloudy)
-            case .overcast:
-                 return UIImage(resource: .overcast)
-            case .rain:
-                return UIImage(resource: .humidity)
-            case .heavyRain:
-                return UIImage(resource: .humidity)
-            case .lightRain:
-                return UIImage(resource: .humidity)
-            default:
-                return UIImage(systemName: "cloud.sun")
-                
-            }
+        guard let condition = weatherCondition else { return nil }
+        
+        switch condition {
+        case .clear:
+            return UIImage(resource: .sun)
+        case .partlyCloudy:
+            return UIImage(resource: .sunIndex)
+        case .cloudy:
+            return UIImage(resource: .cloudy)
+        case .overcast:
+            return UIImage(resource: .overcast)
+        case .rain:
+            return UIImage(resource: .humidity)
+        case .heavyRain:
+            return UIImage(resource: .humidity)
+        case .lightRain:
+            return UIImage(resource: .humidity)
+        default:
+            return UIImage(systemName: "cloud.sun")
         }
+    }
     
     func getWeatherCondition() -> String {
         let condition = weatherCondition
@@ -196,7 +203,7 @@ class WeatherViewModel {
         case .cloudy:
             return "Облачно с прояснениям"
         case .overcast:
-             return "Пасмурно"
+            return "Пасмурно"
         case .rain:
             return "Дождь"
         case .heavyRain:

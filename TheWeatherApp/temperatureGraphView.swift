@@ -10,15 +10,12 @@ import UIKit
 class temperatureGraphView: UIView {
     
     //MARK: - Properties
-    var viewModel: WeatherViewModel
     var temperatures: [Int] = []
     
     //MARK: - Initialization
-    init(viewModel: WeatherViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
         
-        viewModel.addWeatherObserver(self)
         setupView()
     }
     
@@ -35,7 +32,7 @@ class temperatureGraphView: UIView {
     override func draw(_ rect: CGRect) {
         
         guard !temperatures.isEmpty, let context = UIGraphicsGetCurrentContext() else { return }
-
+        
         // Настроим параметры линии
         context.setStrokeColor(UIColor.tintColor.cgColor)
         context.setLineWidth(1)
@@ -73,30 +70,5 @@ class temperatureGraphView: UIView {
         }
         
         context.strokePath()
-    }
-}
-
-//MARK: - WeatherObserver
-extension temperatureGraphView: WeatherObserver {
-    func updateUI(with weather: WeatherModel) {
-        DispatchQueue.main.async { [weak self] in
-            self?.updateUI(with: weather)
-        }
-    }
-    
-    func didUpdateWeather(_ weather: WeatherModel) {
-        guard let hourModel = viewModel.weatherForecasts.first??.hours else { return }
-        var result: [Int] = []
-
-        for index in stride(from: 0, through: hourModel.count, by: 3) {
-            if index < hourModel.count {
-                
-                let temp = hourModel[index].temp
-                result.append(temp)
-                print("- - - -\(result)")
-            }
-            temperatures = result
-            setNeedsDisplay()
-        }
     }
 }

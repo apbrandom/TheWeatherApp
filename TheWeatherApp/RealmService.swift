@@ -37,7 +37,7 @@ class RealmService {
                 if let existingWeatherModel = realm.objects(WeatherRealmModel.self).first {
                     update(existing: existingWeatherModel, with: weatherModel)
                     print("--Realm: Updated successfully")
-//                    print("--Realm Model: \(weatherModel)")
+                    print("--Realm Model: \(weatherModel)")
                 } else {
                     save(weatherModel, in: realm)
                     print("--Realm: Saved successfully")

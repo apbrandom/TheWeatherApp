@@ -17,22 +17,25 @@ class MidContentView: UIView {
     private lazy var twentyFourHoursButton = {
         let button = UIButton()
         let text = "Подробнее на 24 часа"
-        let attributedTitle = AttributedTitle.getUnderlineStyle(title: text,
-                                                                fontSize: 16,
-                                                                kern: 0.2)
+        let attributedTitle = AttributedTitle.getUnderlineStyle(
+            title: text,
+            fontSize: 16,
+            kern: 0.2)
         button.setAttributedTitle(attributedTitle, for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.addTarget(self,
-                         action: #selector(twentyFourHoursButtonTapped),
-                         for: .touchUpInside)
+        button.addTarget(
+            self,
+            action: #selector(twentyFourHoursButtonTapped),
+            for: .touchUpInside)
         return button
     }()
     
     private lazy var twentyFiveDaysButton = {
         let button = UIButton()
-        let attributedTitle = AttributedTitle.getUnderlineStyle(title: "25 дней",
-                                                                fontSize: 16,
-                                                                kern: 0.2)
+        let attributedTitle = AttributedTitle.getUnderlineStyle(
+            title: "25 дней",
+            fontSize: 16,
+            kern: 0.2)
         button.setAttributedTitle(attributedTitle, for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
@@ -104,7 +107,6 @@ class MidContentView: UIView {
             make.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(16)
         }
-        
     }
 }
 
