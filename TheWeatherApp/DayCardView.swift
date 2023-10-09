@@ -129,6 +129,7 @@ class DayCardView: UIView {
         return label
     }()
     
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -141,8 +142,7 @@ class DayCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Private Methods
-    
+    //MARK: - Setup Methods
     private func setupView() {
         backgroundColor = .tintColor
     }

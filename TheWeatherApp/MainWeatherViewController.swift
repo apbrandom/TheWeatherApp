@@ -10,19 +10,9 @@ import SnapKit
 
 class MainWeatherViewController: UIViewController {
     
+    //MARK: - Properties
     var coordinator: MainCoordinator?
-    var viewModel: MainWeatherViewModel
-    var viewModelDetail: DetailWeatherViewModel
-    
-    init(viewModel: MainWeatherViewModel, viewModelDetail: DetailWeatherViewModel) {
-        self.viewModel = viewModel
-        self.viewModelDetail = viewModelDetail
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    var viewModel: WeatherViewModel
     
     //MARK: - Subviews
     private lazy var mainScrollView: UIScrollView = {
@@ -52,7 +42,16 @@ class MainWeatherViewController: UIViewController {
         return view
     }()
     
-    //MARK: - Lifecycle
+    //MARK: - Initialization
+    init(viewModel: WeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,7 +67,10 @@ class MainWeatherViewController: UIViewController {
         
         LocationService.shared.checkLocationService()
         requestPermission()
-        fetchWeather()
+        
+        Task{
+            await viewModel.fetchDataAndUpdateUI()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -77,8 +79,7 @@ class MainWeatherViewController: UIViewController {
         adjustSubviews()
     }
     
-    //MARK: - Actions
-    
+    //MARK: - Actions    
     @objc func leftBarButtonTapped() {
         // Ваш код при нажатии на левую кнопку
     }
@@ -92,17 +93,7 @@ class MainWeatherViewController: UIViewController {
             }
             
             Task {
-                do {
-                    _ = try await viewModel.fetchWeather()
-                    
-                    if let locationName = await viewModel.fetchLocationName() {
-                        DispatchQueue.main.async {
-                            self.navigationItem.title = locationName
-                        }
-                    }
-                } catch {
-                    print("Error: \(error)")
-                }
+                await viewModel.fetchDataAndUpdateUI()
             }
         } else {
             showQAlert(
@@ -115,7 +106,15 @@ class MainWeatherViewController: UIViewController {
                 })        }
     }
     
-    //MARK: - Private Methods
+    private func setupClosures() {
+        midView.buttonTappedClosure = { [weak self] in
+            guard let self = self else { return }
+            let detailViewController = DetailWeatherViewController(viewModel: viewModel)
+            self.navigationController?.pushViewController(detailViewController, animated: true)
+        }
+    }
+    
+    //MARK: - Setup Methods
     private func setupView() {
         view.backgroundColor = .white
         navigationItem.title = "City, Country"
@@ -170,24 +169,7 @@ class MainWeatherViewController: UIViewController {
         }
     }
     
-    private func setupClosures() {
-        midView.buttonTappedClosure = { [weak self] in
-            guard let self = self else { return }
-            let detailViewController = DetailWeatherViewController(viewModel: viewModelDetail)
-            self.navigationController?.pushViewController(detailViewController, animated: true)
-        }
-    }
-    
-    func fetchWeather() {
-        Task {
-            do {
-                _ = try await viewModel.fetchWeather()
-            } catch {
-                print("Error: \(error)")
-            }
-        }
-    }
-    
+    //MARK: - LocationService
     func requestPermission() {
         LocationService.shared.requestPermission = { [weak self] in
             DispatchQueue.main.async {
@@ -196,13 +178,13 @@ class MainWeatherViewController: UIViewController {
             }
         }
     }
-    
 }
 
+//MARK: - TitleObserver
 extension MainWeatherViewController: TitleObservable {
     func didUpdateLocationName(_ locationName: String) {
-        DispatchQueue.main.async {
-            self.navigationItem.title = locationName
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationItem.title = locationName
         }
     }
 }

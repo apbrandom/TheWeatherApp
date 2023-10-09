@@ -9,27 +9,15 @@ import UIKit
 
 class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    
-    var dailyWeatherData: [ForecastsViewModel] = [] {
+    //MARK: - Properties
+    var dailyWeatherData: [ForecastsModel] = [] {
         didSet {
             collectionView.reloadData()
         }
     }
+    var viewModel: WeatherViewModel
     
-    var viewModel: MainWeatherViewModel
-    
-    init(viewModel: MainWeatherViewModel) {
-        self.viewModel = viewModel
-        super.init(frame: .zero)
-        
-        setupSubviews()
-        setupConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        return nil
-    }
-    
+    //MARK: - Subviews
     private lazy var collectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -41,6 +29,20 @@ class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollection
         return collectionView
     }()
     
+    //MARK: - Intialization
+    init(viewModel: WeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+        
+        setupSubviews()
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        return nil
+    }
+    
+    //MARK: - <#Section Heading#>
     private func setupSubviews() {
         addSubview(collectionView)
     }
@@ -85,7 +87,6 @@ class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollection
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = bounds.size.width / 6.2
         return CGSize(width: self.frame.width, height: height)

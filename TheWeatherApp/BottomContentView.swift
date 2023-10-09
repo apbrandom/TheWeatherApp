@@ -9,17 +9,17 @@ import UIKit
 
 class BottomContentView: UIView {
     
-    var viewModel: MainWeatherViewModel
+    //MARK: - Properties
+    var viewModel: WeatherViewModel
     
     // MARK: - Subviews
-    
     private lazy var dailyWeatherCollectionView = {
         let collection = DailyWeatherCollectionReusableView(viewModel: viewModel)
         return collection
     }()
     
     // MARK: - Initializers
-    init(viewModel: MainWeatherViewModel) {
+    init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         
@@ -46,22 +46,20 @@ class BottomContentView: UIView {
             make.bottom.top.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(16)
         }
-        
     }
-    
-    
 }
 
+//MARK: - WeahterObserver
 extension BottomContentView: WeatherObserver {
-    
-    private func updateUI(with weatherModel: WeatherViewModel) {
-        let dailyWeather = weatherModel.forecasts 
-        dailyWeatherCollectionView.dailyWeatherData = dailyWeather
-    }
-    
-    func didUpdateWeather(_ weather: WeatherViewModel) {
+    func didUpdateWeather(_ weather: WeatherModel) {
         DispatchQueue.main.async { [weak self] in
             self?.updateUI(with: weather)
         }
     }
+    internal func updateUI(with weatherModel: WeatherModel) {
+        let dailyWeather = weatherModel.forecasts 
+        dailyWeatherCollectionView.dailyWeatherData = dailyWeather
+    }
+    
+  
 }

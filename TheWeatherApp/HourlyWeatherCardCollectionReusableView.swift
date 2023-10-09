@@ -10,9 +10,10 @@ import SnapKit
 
 class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var viewModel: MainWeatherViewModel
+    //MARK: - Properties
+    var viewModel: WeatherViewModel
     
-    var hoursWeatherData: [HourViewModel] = [] {
+    var hoursWeatherData: [HourModel] = [] {
         didSet {
             collectionView.reloadData()
         }
@@ -31,7 +32,7 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
     }()
     
     // MARK: - Initializers
-    init(viewModel: MainWeatherViewModel) {
+    init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
 
@@ -43,6 +44,7 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
         return nil
     }
     
+    //MARK: - Setup Methods
     private func setupSubviews() {
         addSubview(collectionView)
     }
@@ -53,7 +55,7 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
         }
     }
     
-    func convertHour(_ hour: String) -> String {
+    private func convertHour(_ hour: String) -> String {
         if let hourInt = Int(hour) {
             return String(format: "%02d:00", hourInt)
         }
@@ -61,7 +63,6 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
     }
     
     // MARK: - UICollectionViewDataSource
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hoursWeatherData.count
     }
@@ -82,7 +83,6 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
     
 
     // MARK: - UICollectionViewDelegateFlowLayout
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = bounds.size.width / 8.5 // чтобы влезло 6 карточек горизонтально
         return CGSize(width: width, height: self.frame.height)

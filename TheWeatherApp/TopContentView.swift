@@ -10,9 +10,18 @@ import SnapKit
 
 class TopContentView: UIView {
     
-    var viewModel: MainWeatherViewModel
+    //MARK: - Properties
+    var viewModel: WeatherViewModel
     
-    init(viewModel: MainWeatherViewModel) {
+    // MARK: - Subviews
+    private lazy var dayCardView: DayCardView = {
+        let view = DayCardView()
+        view.layer.cornerRadius = 5
+        return view
+    }()
+    
+    //MARK: - Initialization
+    init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         
@@ -24,15 +33,6 @@ class TopContentView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    // MARK: - Subviews
-    private lazy var dayCardView: DayCardView = {
-        let view = DayCardView()
-        view.layer.cornerRadius = 5
-        return view
-    }()
-    
     
     // MARK: - Private Methods
     private func setupSubviews() {
@@ -51,10 +51,15 @@ class TopContentView: UIView {
 }
 
 // MARK: - WeatherObserver
-
 extension TopContentView: WeatherObserver {
-    func updateUI(with weatherModel: WeatherViewModel) {
-        guard let nowDt = viewModel.convertDate(from: weatherModel.nowDt) else { return }
+    internal func didUpdateWeather(_ weatherModel: WeatherModel) {
+        DispatchQueue.main.async { [weak self] in
+            self?.updateUI(with: weatherModel)
+        }
+    }
+    
+    internal func updateUI(with weatherModel: WeatherModel) {
+        guard let nowDt = viewModel.convertDateWithFormater(from: weatherModel.nowDt) else { return }
         let fact = weatherModel.fact
         let forecasts = weatherModel.forecasts
         let tempMin = forecasts.first?.parts.day.tempMin ?? 0
@@ -71,11 +76,5 @@ extension TopContentView: WeatherObserver {
         dayCardView.tempMinMaxLabel.text = "\(tempMin)\u{00B0}/\(tempMax)\u{00B0}"
         dayCardView.condintionLabel.text = condition
         dayCardView.chanceOfRainLabel.text = "\(chanceOfRain)%"
-    }
-    
-    func didUpdateWeather(_ weatherModel: WeatherViewModel) {
-        DispatchQueue.main.async { [weak self] in
-            self?.updateUI(with: weatherModel)
-        }
     }
 }

@@ -52,6 +52,7 @@ class LocationService: NSObject {
     func requestOnTimeLocation() {
         locationManager?.requestLocation()
     }
+
 }
 
 extension LocationService: CLLocationManagerDelegate {

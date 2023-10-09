@@ -12,7 +12,6 @@ import RealmSwift
 class ModelConverter {
     
     //MARK: - To Realm Model
-    
     func toRealmModel(from networkModel: WeatherNetworkModel) -> WeatherRealmModel {
         let realmModel = WeatherRealmModel()
         
@@ -73,59 +72,58 @@ class ModelConverter {
     }
     
     //MARK: - To ViewModel
-    
-    func toViewModel(from realmModel: WeatherRealmModel) -> WeatherViewModel? {
-        guard let factViewModel = convertToFactViewModel(from: realmModel.fact),
+    func toViewModel(from realmModel: WeatherRealmModel) -> WeatherModel? {
+        guard let factModel = convertToFactViewModel(from: realmModel.fact),
               let forecastsViewModel = convertToForecastsViewModels(from: realmModel.forecasts) else {
             return nil
         }
         
-        return WeatherViewModel(nowDt: realmModel.nowDt, fact: factViewModel, forecasts: forecastsViewModel)
+        return WeatherModel(nowDt: realmModel.nowDt, fact: factModel, forecasts: forecastsViewModel)
     }
     
-    private func convertToFactViewModel(from fact: FactRealm?) -> FactViewModel? {
+    private func convertToFactViewModel(from fact: FactRealm?) -> FactModel? {
         guard let fact = fact else { return nil }
-        return FactViewModel(temp: fact.temp,
+        return FactModel(temp: fact.temp,
                              windSpeed: fact.windSpeed,
                              humidity: fact.humidity)
     }
     
-    private func convertToForecastsViewModels(from forecasts: List<ForecastsRealm>) -> [ForecastsViewModel]? {
+    private func convertToForecastsViewModels(from forecasts: List<ForecastsRealm>) -> [ForecastsModel]? {
         let viewModels = Array(forecasts.compactMap { self.convertToForecastsViewModel(from: $0) })
         guard viewModels.count == forecasts.count else { return nil }
         return viewModels
     }
     
-    private func convertToForecastsViewModel(from forecast: ForecastsRealm) -> ForecastsViewModel? {
+    private func convertToForecastsViewModel(from forecast: ForecastsRealm) -> ForecastsModel? {
         guard let parts = convertToPartsViewModel(from: forecast.parts) else { return nil }
         
         let hourViewModels = convertToHourViewModels(from: forecast.hours)
         
-        return ForecastsViewModel(date: forecast.date,
+        return ForecastsModel(date: forecast.date,
                                   sunrise: forecast.sunrise,
                                   sunset: forecast.sunset,
                                   parts: parts,
                                   hours: hourViewModels)
     }
     
-    private func convertToPartsViewModel(from parts: PartsRealm?) -> PartsViewModel? {
+    private func convertToPartsViewModel(from parts: PartsRealm?) -> PartsModel? {
         guard let parts = parts,
               let day = convertToPartDetailsViewModel(from: parts.day) else {
             return nil
         }
-        return PartsViewModel(day: day)
+        return PartsModel(day: day)
     }
     
-    private func convertToPartDetailsViewModel(from details: PartDeteilsRealm?) -> PartDetailsViewModel? {
+    private func convertToPartDetailsViewModel(from details: PartDeteilsRealm?) -> PartDetailsModel? {
         guard let details = details else { return nil }
-        return PartDetailsViewModel(tempMin: details.tempMin,
+        return PartDetailsModel(tempMin: details.tempMin,
                                     tempMax: details.tempMax,
                                     precProb: details.precProb)
     }
     
-    private func convertToHourViewModels(from hours: List<HoursRealm>) -> [HourViewModel] {
+    private func convertToHourViewModels(from hours: List<HoursRealm>) -> [HourModel] {
         return Array(hours.map {
-            HourViewModel(hour: $0.hour, temp: $0.temp, condition: $0.condition)
+            HourModel(hour: $0.hour, temp: $0.temp, condition: $0.condition)
         })
     }
 }

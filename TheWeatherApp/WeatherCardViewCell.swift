@@ -8,6 +8,8 @@
 import UIKit
 
 class WeatherCardViewCell: UICollectionViewCell {
+    
+    //MARK: - Subviews
     lazy var temperatureLabel = {
         let label = UILabel()
         label.textColor = .black
@@ -28,6 +30,7 @@ class WeatherCardViewCell: UICollectionViewCell {
         return label
     }()
     
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -40,6 +43,7 @@ class WeatherCardViewCell: UICollectionViewCell {
         return nil
     }
     
+    //MARK: - Setup Methods
     private func setupSubviews() {
         addSubview(temperatureLabel)
         addSubview(conditionIconImageView)
@@ -68,7 +72,6 @@ class WeatherCardViewCell: UICollectionViewCell {
             make.centerX.equalTo(snp.centerX)
             make.top.equalToSuperview().inset(15)
         }
-        
     }
 }
 

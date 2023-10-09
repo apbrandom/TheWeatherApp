@@ -8,51 +8,95 @@
 import UIKit
 import SnapKit
 
-class DetailWeatherViewController: UIViewController {
+class DetailWeatherViewController: UITableViewController {
+    
+    //MARK: - Properties
+    var viewModel: WeatherViewModel
     
     //MARK: - initialization
-    var viewModel: DetailWeatherViewModel
-    
-    init(viewModel: DetailWeatherViewModel) {
+    init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .grouped) // или .plain, в зависимости от нужного стиля
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Subviews
-    
-    let tempratureGraphView = {
-        let view = temperatureGraphView()
-        return view
-    }()
-    
-    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupView()
+        
         setupSubviews()
         setupConstraints()
+        setupTableView()
+        
+        viewModel.addWeatherObserver(self)
+        
+        
+        Task {
+            await viewModel.fetchDataAndUpdateUI()
+        }
     }
     
-    //MARK: - Layout
-    
-    func setupView() {
-        view.backgroundColor = .systemGray3
-    }
-    
+    //MARK: - Setup Methods
     func setupSubviews() {
         
     }
     
     func setupConstraints() {
-        tempratureGraphView.snp.makeConstraints { make in
-            make.height.equalTo(100)
-            make.width.equalToSuperview()
-            make.top.equalToSuperview().inset(100)
-        }
+        
+    }
+    
+    func setupTableView() {
+        view.backgroundColor = .white
+        tableView.register(HourlyTableViewCell.self, forCellReuseIdentifier: HourlyTableViewCell.reuseIdentifier)
+    }
+    
+    //MARK: - TablewView
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = HourlyWeatherHeaderView(viewModel: viewModel)
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 200
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.weatherForecasts.first??.hours.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: HourlyTableViewCell.reuseIdentifier, for: indexPath) as! HourlyTableViewCell
+        
+        let hour = viewModel.weatherForecasts.first??.hours[indexPath.row]
+        cell.configure(with: hour)
+        return cell
+    }
+    
+
+}
+
+     //MARK: - Observer
+extension DetailWeatherViewController: WeatherObserver {
+    func didUpdateWeather(_ weather: WeatherModel) {
+//        self.updateUI(with: weather)
+    }
+    
+    func updateUI(with weather: WeatherModel) {
+//        guard let hourModel = viewModel.weatherForecasts.first??.hours else { return }
+//        var temeratures: [Int] = []
+//        
+//        for index in stride(from: 0, through: hourModel.count, by: 3) {
+//            if index < hourModel.count {
+//                let temp = hourModel[index].temp
+//                temeratures.append(temp)
+//                print("- - - -\(temeratures)")
+//            }
+//        }
+        
+        //        tempratureGraphView.temperatures = temeratures
+        //        tempratureGraphView.setNeedsDisplay()
     }
 }
+

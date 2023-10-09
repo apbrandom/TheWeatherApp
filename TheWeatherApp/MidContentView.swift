@@ -10,24 +10,10 @@ import SnapKit
 
 class MidContentView: UIView {
     
+    //MARK: - Properties
     var buttonTappedClosure: (() -> Void)?
 
-    //MARK: - initialization
-    var viewModel: MainWeatherViewModel
-    
-    init(viewModel: MainWeatherViewModel) {
-        self.viewModel = viewModel
-        super.init(frame: .zero)
-        setupSubviews()
-        setupConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     // MARK: - Subviews
-    
     private lazy var twentyFourHoursButton = {
         let button = UIButton()
         let text = "Подробнее на 24 часа"
@@ -36,6 +22,9 @@ class MidContentView: UIView {
                                                                 kern: 0.2)
         button.setAttributedTitle(attributedTitle, for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.addTarget(self,
+                         action: #selector(twentyFourHoursButtonTapped),
+                         for: .touchUpInside)
         return button
     }()
     
@@ -62,15 +51,27 @@ class MidContentView: UIView {
         return label
     }()
     
-    //MARK: - Action
+    //MARK: - initialization
+    var viewModel: WeatherViewModel
     
-    func twentyFourHoursButtonTapped()  {
-        buttonTappedClosure?()
+    init(viewModel: WeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+        
+        setupSubviews()
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Action
+    @objc func twentyFourHoursButtonTapped()  {
+      buttonTappedClosure?()
     }
     
     // MARK: - Private Methods
-    
-    
     private func setupSubviews() {
         addSubview(dailyWeatherLabel)
         addSubview(hourlyWeatherCardCollectionView)
@@ -107,16 +108,16 @@ class MidContentView: UIView {
     }
 }
 
+//MARK: - WeatherObserver
 extension MidContentView: WeatherObserver {
-    private func updateUI(with weatherModel: WeatherViewModel) {
-            guard let hourlyWeather = weatherModel.forecasts.first?.hours else { return }
-            hourlyWeatherCardCollectionView.hoursWeatherData = hourlyWeather
-        }
-
-    
-    func didUpdateWeather(_ weather: WeatherViewModel) {
+    internal func didUpdateWeather(_ weather: WeatherModel) {
         DispatchQueue.main.async { [weak self] in
             self?.updateUI(with: weather)
         }
     }
+    
+    internal func updateUI(with weatherModel: WeatherModel) {
+            guard let hourlyWeather = weatherModel.forecasts.first?.hours else { return }
+            hourlyWeatherCardCollectionView.hoursWeatherData = hourlyWeather
+        }
 }
