@@ -15,14 +15,14 @@ struct WeatherModel {
 
 struct FactModel {
     let temp: Int
-    let windSpeed: Double //
-    let humidity: Int //
+    let windSpeed: Double 
+    let humidity: Int
 }
 
 struct ForecastsModel {
-    let date: String //
+    let date: String
     let sunrise: String
-    let sunset: String //
+    let sunset: String
     let parts: PartsModel
     let hours: [HourModel]
 }
@@ -42,25 +42,6 @@ struct HourModel {
     let hour: String
     let temp: Int
     let condition: String
+    let humidity: Int
 }
-
-    
-    
-    
-//
-//    let fact: FactModel
-//    let forecasts: [ForecastsModel]
-//}
-//
-//struct FactModel {
-//    let temp: Int
-//    let feelsLike: Int
-//}
-//
-//struct ForecastsModel {
-//    let sunrise: String
-//}
-//
-//
-
 

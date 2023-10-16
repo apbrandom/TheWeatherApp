@@ -41,6 +41,7 @@ class HoursRealm: Object {
     @Persisted var hour: String
     @Persisted var temp: Int
     @Persisted var condition: String
+    @Persisted var humidity: Int
 }
 
 

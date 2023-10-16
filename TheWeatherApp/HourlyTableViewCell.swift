@@ -2,7 +2,7 @@
 //  HourlyTableViewCell.swift
 //  TheWeatherApp
 //
-//  Created by Vadim Vinogradov on 07.10.2023.
+//  Created by Vadim Vinogradov on 14.10.2023.
 //
 
 import UIKit
@@ -22,10 +22,10 @@ class HourlyTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    
-    
     func configure(with hour: HourModel?) {
-        // Здесь вы можете настроить вашу ячейку на основе данных модели "HourModel"
-        // ...
-    }
+            // Здесь вы можете настроить вашу ячейку на основе данных модели "HourModel"
+            // ...
+        }
+
 }
+

@@ -7,15 +7,15 @@
 
 import UIKit
 
-class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class DailyWeatherCollectionReusableView: UICollectionReusableView {
     
     //MARK: - Properties
+    var viewModel: WeatherViewModel
     var dailyWeatherData: [ForecastsModel] = [] {
         didSet {
             collectionView.reloadData()
         }
     }
-    var viewModel: WeatherViewModel
     
     //MARK: - Subviews
     private lazy var collectionView = {
@@ -25,7 +25,7 @@ class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollection
         collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(DailyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "DailyWeatherCollectionViewCell")
+        collectionView.register(DailyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: DailyWeatherCollectionViewCell.reuseIndentifier)
         return collectionView
     }()
     
@@ -42,7 +42,7 @@ class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollection
         return nil
     }
     
-    //MARK: - <#Section Heading#>
+    //MARK: - Setup Methods
     private func setupSubviews() {
         addSubview(collectionView)
     }
@@ -67,14 +67,16 @@ class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollection
         
         return targetFormatter.string(from: date)
     }
-    
-    
+}
+
+//MARK: - UICollectionViewDataSource
+extension DailyWeatherCollectionReusableView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         dailyWeatherData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DailyWeatherCollectionViewCell", for: indexPath) as? DailyWeatherCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyWeatherCollectionViewCell.reuseIndentifier, for: indexPath) as? DailyWeatherCollectionViewCell else {
             return UICollectionViewCell()
         }
         
@@ -85,8 +87,10 @@ class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollection
         cell.temperatureRangeLabel.text = "\(dailydata.parts.day.tempMin)\u{00B0}-\(dailydata.parts.day.tempMax)\u{00B0}"
         return cell
     }
-    
-    // MARK: - UICollectionViewDelegateFlowLayout
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension DailyWeatherCollectionReusableView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = bounds.size.width / 6.2
         return CGSize(width: self.frame.width, height: height)
@@ -96,3 +100,4 @@ class DailyWeatherCollectionReusableView: UICollectionReusableView, UICollection
         return 16
     }
 }
+

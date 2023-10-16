@@ -10,7 +10,11 @@ import UIKit
 class temperatureGraphView: UIView {
     
     //MARK: - Properties
-    var temperatures: [Int] = []
+    var temperatures: [Int] = [] {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     
     //MARK: - Initialization
     init() {

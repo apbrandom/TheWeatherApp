@@ -60,6 +60,4 @@ extension BottomContentView: WeatherObserver {
         let dailyWeather = weatherModel.forecasts 
         dailyWeatherCollectionView.dailyWeatherData = dailyWeather
     }
-    
-  
 }

@@ -59,7 +59,7 @@ extension TopContentView: WeatherObserver {
     }
     
     internal func updateUI(with weatherModel: WeatherModel) {
-        guard let nowDt = viewModel.convertDateWithFormater(from: weatherModel.nowDt) else { return }
+        guard let nowDt = ToolsService.convertDateWithFormater(from: weatherModel.nowDt) else { return }
         let fact = weatherModel.fact
         let forecasts = weatherModel.forecasts
         let tempMin = forecasts.first?.parts.day.tempMin ?? 0

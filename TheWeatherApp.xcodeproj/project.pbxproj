@@ -26,11 +26,17 @@
 		CBA1E8602ABC651900BDA620 /* WeatherRealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA1E85F2ABC651900BDA620 /* WeatherRealmModel.swift */; };
 		CBA1E8622ABC6EAA00BDA620 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA1E8612ABC6EAA00BDA620 /* RealmService.swift */; };
 		CBB2FC382AD1B5A0004F3653 /* DetailWeatherTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB2FC372AD1B5A0004F3653 /* DetailWeatherTableViewController.swift */; };
-		CBB2FC3A2AD1BB5E004F3653 /* HourlyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB2FC392AD1BB5E004F3653 /* HourlyTableViewCell.swift */; };
 		CBB2FC3C2AD1BCA7004F3653 /* HourlyWeatherHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB2FC3B2AD1BCA7004F3653 /* HourlyWeatherHeaderView.swift */; };
 		CBBDB14E2AAF83B800C241CA /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CBBDB14D2AAF83B800C241CA /* SnapKit */; };
 		CBBDB1502AAF83B800C241CA /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = CBBDB14F2AAF83B800C241CA /* SnapKit-Dynamic */; };
 		CBBDB1522AB0787100C241CA /* TopContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDB1512AB0787100C241CA /* TopContentView.swift */; };
+		CBC5ADB22ADACE380044ACCB /* ToolsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5ADB12ADACE380044ACCB /* ToolsService.swift */; };
+		CBC5ADB42ADADC270044ACCB /* HourlyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5ADB32ADADC270044ACCB /* HourlyTableViewCell.swift */; };
+		CBE1B8242AD6A8370046B43E /* WeatherConditionImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1B8232AD6A8370046B43E /* WeatherConditionImageCollectionViewCell.swift */; };
+		CBE1B8262AD6AE680046B43E /* HumidityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1B8252AD6AE680046B43E /* HumidityCollectionViewCell.swift */; };
+		CBE1B8282AD6AF0A0046B43E /* HourlyTimeIntervalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1B8272AD6AF0A0046B43E /* HourlyTimeIntervalCollectionViewCell.swift */; };
+		CBE1B82A2AD6B2590046B43E /* HourlyWeatherCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1B8292AD6B2590046B43E /* HourlyWeatherCollectionReusableView.swift */; };
+		CBE1B82C2AD81CF30046B43E /* FatalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1B82B2AD81CF30046B43E /* FatalError.swift */; };
 		CBF61CF02AC7162200A296CD /* DailyWeatherCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61CEF2AC7162200A296CD /* DailyWeatherCollectionReusableView.swift */; };
 		CBF61CF22AC7194F00A296CD /* DailyWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF61CF12AC7194F00A296CD /* DailyWeatherCollectionViewCell.swift */; };
 		CBFACD6E2AB1E50D00DD033F /* DayCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFACD6D2AB1E50D00DD033F /* DayCardView.swift */; };
@@ -62,9 +68,15 @@
 		CBA1E85F2ABC651900BDA620 /* WeatherRealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRealmModel.swift; sourceTree = "<group>"; };
 		CBA1E8612ABC6EAA00BDA620 /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
 		CBB2FC372AD1B5A0004F3653 /* DetailWeatherTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherTableViewController.swift; sourceTree = "<group>"; };
-		CBB2FC392AD1BB5E004F3653 /* HourlyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyTableViewCell.swift; sourceTree = "<group>"; };
 		CBB2FC3B2AD1BCA7004F3653 /* HourlyWeatherHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherHeaderView.swift; sourceTree = "<group>"; };
 		CBBDB1512AB0787100C241CA /* TopContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopContentView.swift; sourceTree = "<group>"; };
+		CBC5ADB12ADACE380044ACCB /* ToolsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsService.swift; sourceTree = "<group>"; };
+		CBC5ADB32ADADC270044ACCB /* HourlyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyTableViewCell.swift; sourceTree = "<group>"; };
+		CBE1B8232AD6A8370046B43E /* WeatherConditionImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherConditionImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CBE1B8252AD6AE680046B43E /* HumidityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumidityCollectionViewCell.swift; sourceTree = "<group>"; };
+		CBE1B8272AD6AF0A0046B43E /* HourlyTimeIntervalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyTimeIntervalCollectionViewCell.swift; sourceTree = "<group>"; };
+		CBE1B8292AD6B2590046B43E /* HourlyWeatherCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCollectionReusableView.swift; sourceTree = "<group>"; };
+		CBE1B82B2AD81CF30046B43E /* FatalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatalError.swift; sourceTree = "<group>"; };
 		CBF61CEF2AC7162200A296CD /* DailyWeatherCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWeatherCollectionReusableView.swift; sourceTree = "<group>"; };
 		CBF61CF12AC7194F00A296CD /* DailyWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
 		CBFACD6D2AB1E50D00DD033F /* DayCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCardView.swift; sourceTree = "<group>"; };
@@ -154,9 +166,13 @@
 				CBFACD7A2AB34B2400DD033F /* DetailWeatherViewController.swift */,
 				CBB2FC3B2AD1BCA7004F3653 /* HourlyWeatherHeaderView.swift */,
 				CB538D502ACEDFDB0050F7CE /* temperatureGraphView.swift */,
-				CBB2FC392AD1BB5E004F3653 /* HourlyTableViewCell.swift */,
+				CBE1B8292AD6B2590046B43E /* HourlyWeatherCollectionReusableView.swift */,
+				CBE1B8232AD6A8370046B43E /* WeatherConditionImageCollectionViewCell.swift */,
+				CBE1B8252AD6AE680046B43E /* HumidityCollectionViewCell.swift */,
+				CBE1B8272AD6AF0A0046B43E /* HourlyTimeIntervalCollectionViewCell.swift */,
 				CB013EC82AC84D5D00C22EE5 /* LocationPermissionViewController.swift */,
 				CBB2FC372AD1B5A0004F3653 /* DetailWeatherTableViewController.swift */,
+				CBC5ADB32ADADC270044ACCB /* HourlyTableViewCell.swift */,
 			);
 			name = DetailWeatherScreen;
 			sourceTree = "<group>";
@@ -186,6 +202,14 @@
 			name = Realm;
 			sourceTree = "<group>";
 		};
+		CBC5ADB02ADACE1A0044ACCB /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				CBC5ADB12ADACE380044ACCB /* ToolsService.swift */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
 		CBFACD6A2AB1E2BD00DD033F /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +231,7 @@
 		CBFACD6C2AB1E43300DD033F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				CBC5ADB02ADACE1A0044ACCB /* Tools */,
 				CB42B8F82ABDEC1A00434BB7 /* Converter */,
 				CBA1E85E2ABC63C600BDA620 /* Realm */,
 				CBFACD812AB4B92900DD033F /* Networking */,
@@ -220,6 +245,7 @@
 			children = (
 				CB14E1232AC4736B008ABE91 /* AttributedTitle.swift */,
 				CB60A1712ACDA6EF00E6893F /* Alert.swift */,
+				CBE1B82B2AD81CF30046B43E /* FatalError.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -337,19 +363,25 @@
 				CBFACD732AB205A000DD033F /* Coordinator.swift in Sources */,
 				CBFACD772AB20D6200DD033F /* WeatherNetworkModel.swift in Sources */,
 				CB0AD2442AAF408600E96A60 /* MainWeatherViewController.swift in Sources */,
-				CBB2FC3A2AD1BB5E004F3653 /* HourlyTableViewCell.swift in Sources */,
 				CBA1E8602ABC651900BDA620 /* WeatherRealmModel.swift in Sources */,
+				CBE1B8242AD6A8370046B43E /* WeatherConditionImageCollectionViewCell.swift in Sources */,
 				CBFACD7B2AB34B2400DD033F /* DetailWeatherViewController.swift in Sources */,
 				CB538D512ACEDFDB0050F7CE /* temperatureGraphView.swift in Sources */,
+				CBE1B82A2AD6B2590046B43E /* HourlyWeatherCollectionReusableView.swift in Sources */,
+				CBE1B8262AD6AE680046B43E /* HumidityCollectionViewCell.swift in Sources */,
 				CBFACD6E2AB1E50D00DD033F /* DayCardView.swift in Sources */,
 				CB0AD2402AAF408600E96A60 /* AppDelegate.swift in Sources */,
 				CBB2FC382AD1B5A0004F3653 /* DetailWeatherTableViewController.swift in Sources */,
 				CBBDB1522AB0787100C241CA /* TopContentView.swift in Sources */,
+				CBC5ADB22ADACE380044ACCB /* ToolsService.swift in Sources */,
+				CBE1B82C2AD81CF30046B43E /* FatalError.swift in Sources */,
+				CBC5ADB42ADADC270044ACCB /* HourlyTableViewCell.swift in Sources */,
 				CB42B8FA2ABDED9000434BB7 /* ModelConverter.swift in Sources */,
 				CBFACD7E2AB3653400DD033F /* NetworkService.swift in Sources */,
 				CBFACD8B2AB71FFE00DD033F /* WeatherModel.swift in Sources */,
 				CB0AD2422AAF408600E96A60 /* SceneDelegate.swift in Sources */,
 				CBF61CF22AC7194F00A296CD /* DailyWeatherCollectionViewCell.swift in Sources */,
+				CBE1B8282AD6AF0A0046B43E /* HourlyTimeIntervalCollectionViewCell.swift in Sources */,
 				CBB2FC3C2AD1BCA7004F3653 /* HourlyWeatherHeaderView.swift in Sources */,
 				CB699FFF2AB1AE710072A864 /* BottomContentView.swift in Sources */,
 				CBF61CF02AC7162200A296CD /* DailyWeatherCollectionReusableView.swift in Sources */,

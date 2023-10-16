@@ -9,6 +9,11 @@ import UIKit
 import SnapKit
 
 class DailyWeatherCollectionViewCell: UICollectionViewCell {
+    
+    //MARK: - Properties
+    static let reuseIndentifier = "DailyWeatherCollectionViewCell"
+    
+    //MARK: - Subviews
     lazy var dataLabel = {
         let label = UILabel()
         label.textAlignment = .right
@@ -42,6 +47,7 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    //MARK: - Intialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -54,7 +60,7 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
         return nil
     }
     
-    
+    //MARK: - Setup Methods
     private func setupView() {
         backgroundColor = .secBackground
         layer.cornerRadius = 10
@@ -95,5 +101,4 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
             make.leading.equalTo(conditionLabel.snp.trailing).offset(5)
         }
     }
-    
 }

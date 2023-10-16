@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class HourlyWeatherCardCollectionReusableView: UICollectionReusableView {
     
     //MARK: - Properties
     var viewModel: WeatherViewModel
@@ -27,15 +27,15 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
         collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(WeatherCardViewCell.self, forCellWithReuseIdentifier: "WeatherCardViewCell")
+        collectionView.register(WeatherCardViewCell.self, forCellWithReuseIdentifier: WeatherCardViewCell.reuseIdentifier)
         return collectionView
     }()
     
-    // MARK: - Initializers
+    // MARK: - Initialization
     init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
-
+        
         setupSubviews()
         setupConstraints()
     }
@@ -54,36 +54,34 @@ class HourlyWeatherCardCollectionReusableView: UICollectionReusableView, UIColle
             make.edges.equalToSuperview()
         }
     }
-    
-    private func convertHour(_ hour: String) -> String {
-        if let hourInt = Int(hour) {
-            return String(format: "%02d:00", hourInt)
-        }
-        return "Invalid hour"
-    }
-    
-    // MARK: - UICollectionViewDataSource
+}
+
+// MARK: - UICollectionViewDataSource
+extension HourlyWeatherCardCollectionReusableView: UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hoursWeatherData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCardViewCell", for: indexPath) as? WeatherCardViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCardViewCell.reuseIdentifier, for: indexPath) as? WeatherCardViewCell else {
             return UICollectionViewCell()
         }
         
         let hourData = hoursWeatherData[indexPath.row]
-        cell.hourTimeIntervalLabel.text = convertHour(hourData.hour)
+        cell.hourTimeIntervalLabel.text = ToolsService.convertHour(hourData.hour)
         cell.temperatureLabel.text = "\(hourData.temp)\u{00B0}"
         viewModel.setWeatherCondition(from: hourData.condition)
         cell.conditionIconImageView.image = viewModel.getWeatherImage()
         
         return cell
     }
-    
-    // MARK: - UICollectionViewDelegateFlowLayout
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension HourlyWeatherCardCollectionReusableView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = bounds.size.width / 8.5 // чтобы влезло 6 карточек горизонтально
+        let width = bounds.size.width / 8.5
         return CGSize(width: width, height: self.frame.height)
     }
     

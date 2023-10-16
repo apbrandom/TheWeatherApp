@@ -19,12 +19,12 @@ class HourlyWeatherHeaderView: UIView {
         return view
     }()
     
-    private lazy var conditionIconImageView = {
-        let imageView = UIImageView()
-        imageView.image = .sun
-        return imageView
+    private lazy var hourlyWeatherCollectionView = {
+        let collection = HourlyWeatherCollectionReusableView(viewModel: viewModel)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        return collection
     }()
-
+    
     // MARK: - Initialization
     init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
@@ -47,13 +47,20 @@ class HourlyWeatherHeaderView: UIView {
     
     private func setupSubviews() {
         addSubview(tempGraphView)
+        addSubview(hourlyWeatherCollectionView)
     }
     
     private func setupConstraints() {
         tempGraphView.snp.makeConstraints { make in
-            make.height.equalTo(100)
+            make.height.equalTo(45)
             make.width.equalToSuperview()
             make.top.equalToSuperview()
+        }
+        
+        hourlyWeatherCollectionView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.top.equalTo(tempGraphView.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
         }
     }
 }
@@ -68,24 +75,18 @@ extension HourlyWeatherHeaderView: WeatherObserver {
     
     func updateUI(with weather: WeatherModel) {
         guard let hourModel = viewModel.weatherForecasts.first??.hours else { return }
+        hourlyWeatherCollectionView.hourlyWeatherData = hourModel
+  
         var tempResult: [Int] = []
-        var conditionResult: [String] = []
-        var hourResult: [String] = []
-        
+
+        //Get data only for every 3 hours
         for i in stride(from: 0, through: hourModel.count, by: 3) {
             if i < hourModel.count {
                 let temp = hourModel[i].temp
-                let cond = hourModel[i].condition
-                let hour = hourModel[i].hour
-                
                 tempResult.append(temp)
-                conditionResult.append(cond)
-                hourResult.append(hour)
             }
-            
-            
+          
             tempGraphView.temperatures = tempResult
-            
             tempGraphView.setNeedsDisplay()
         }
     }

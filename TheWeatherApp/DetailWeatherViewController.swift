@@ -16,7 +16,7 @@ class DetailWeatherViewController: UITableViewController {
     //MARK: - initialization
     init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
-        super.init(style: .grouped) // или .plain, в зависимости от нужного стиля
+        super.init(style: .grouped) 
     }
     
     required init?(coder: NSCoder) {
@@ -26,7 +26,7 @@ class DetailWeatherViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupSubviews()
+        setupView()
         setupConstraints()
         setupTableView()
         
@@ -38,8 +38,8 @@ class DetailWeatherViewController: UITableViewController {
     }
     
     //MARK: - Setup Methods
-    func setupSubviews() {
-        
+    func setupView() {
+        view.backgroundColor = .secBackground
     }
     
     func setupConstraints() {
@@ -47,13 +47,14 @@ class DetailWeatherViewController: UITableViewController {
     }
     
     func setupTableView() {
-        view.backgroundColor = .white
         tableView.register(HourlyTableViewCell.self, forCellReuseIdentifier: HourlyTableViewCell.reuseIdentifier)
     }
     
     //MARK: - TablewView
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = HourlyWeatherHeaderView(viewModel: viewModel)
+        
+        viewModel.addWeatherObserver(headerView)
         return headerView
     }
     
@@ -72,8 +73,6 @@ class DetailWeatherViewController: UITableViewController {
         cell.configure(with: hour)
         return cell
     }
-    
-
 }
 
      //MARK: - Observer

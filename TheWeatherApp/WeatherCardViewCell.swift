@@ -9,6 +9,9 @@ import UIKit
 
 class WeatherCardViewCell: UICollectionViewCell {
     
+    //MARK: - Properties    
+    static let reuseIdentifier = "WeatherCardViewCell"
+    
     //MARK: - Subviews
     lazy var temperatureLabel = {
         let label = UILabel()

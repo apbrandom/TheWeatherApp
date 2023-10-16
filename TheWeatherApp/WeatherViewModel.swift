@@ -113,23 +113,6 @@ class WeatherViewModel {
         }
     }
     
-    func convertDateWithFormater(from isoDate: String) -> String? {
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        
-        guard let date = isoFormatter.date(from: isoDate) else {
-            print("Bad iso date format")
-            return nil
-        }
-        
-        let formartter = DateFormatter()
-        formartter.locale = Locale(identifier: "ru_RU")
-        formartter.dateFormat = "HH:mm, EEE d MMM"
-        
-        let resultDate = formartter.string(from: date)
-        return resultDate
-    }
-    
     func fetchDataAndUpdateUI() async {
         // Получение координат
         if let coordinate = await LocationService.shared.getCurrentLocation() {
@@ -149,7 +132,6 @@ class WeatherViewModel {
             print("Ошибка при получении данных о погоде: \(error)")
         }
         
-        // Получение имени местоположения
         if let locationName = await fetchLocationName() {
             DispatchQueue.main.async { [weak self] in
                 self?.notifyTitleObservers(locationName)

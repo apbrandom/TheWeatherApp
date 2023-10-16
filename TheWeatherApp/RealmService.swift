@@ -11,10 +11,10 @@ class RealmService {
     private var realm: Realm? {
             do {
                 let config = Realm.Configuration(
-                    schemaVersion: 9,  // увеличьте это значение на 1 при каждой новой миграции
+                    schemaVersion: 10,  // увеличьте это значение на 1 при каждой новой миграции
                     migrationBlock: { migration, oldSchemaVersion in
                         // код миграции
-                        if oldSchemaVersion < 1 {
+                        if oldSchemaVersion < 9 {
 
                         }
                     }

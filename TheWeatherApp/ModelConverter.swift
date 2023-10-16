@@ -64,6 +64,7 @@ class ModelConverter {
             realmHour.hour = hour.hour
             realmHour.temp = hour.temp
             realmHour.condition = hour.condition
+            realmHour.humidity = hour.humidity
             return realmHour
         }
         
@@ -123,7 +124,7 @@ class ModelConverter {
     
     private func convertToHourViewModels(from hours: List<HoursRealm>) -> [HourModel] {
         return Array(hours.map {
-            HourModel(hour: $0.hour, temp: $0.temp, condition: $0.condition)
+            HourModel(hour: $0.hour, temp: $0.temp, condition: $0.condition, humidity: $0.humidity)
         })
     }
 }
